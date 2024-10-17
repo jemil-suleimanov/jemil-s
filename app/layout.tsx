@@ -23,19 +23,17 @@ const geistMono = localFont({
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   const [openTabs, setOpenTabs] = useState<{ name: string; path: string }[]>([
-    { name: 'hero.tsx', path: '/' }
+    { name: 'page.tsx', path: '/' }
   ]);
-  const [showExplorer, setShowExplorer] = useState(true);
-  const [showSearch, setShowSearch] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     const currentPath = pathname;
-    const tabName = currentPath === '/' ? 'hero.tsx' : currentPath.split('/').pop() || '';
+    const tabName = currentPath === '/' ? 'page.tsx' : currentPath.split('/').pop() || '';
     
     if (!openTabs.some(tab => tab.path === currentPath)) {
       setOpenTabs(prev => [...prev, { name: tabName, path: currentPath }]);
@@ -44,28 +42,25 @@ export default function RootLayout({
 
   const handleCloseTab = (path: string) => {
     setOpenTabs(prev => prev.filter(tab => tab.path !== path));
-    if (pathname === path && openTabs.length > 1) {
-      window.history.pushState(null, '', openTabs[0]?.path || '/');
-    }
   };
 
-  const toggleExplorer = () => {
-    setShowExplorer(true);
-    setShowSearch(false);
+  const handleToggleExplorer = () => {
+    // Implement explorer toggle functionality
+    console.log('Toggle explorer');
   };
 
-  const toggleSearch = () => {
-    setShowExplorer(false);
-    setShowSearch(true);
+  const handleToggleSearch = () => {
+    // Implement search toggle functionality
+    console.log('Toggle search');
   };
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-[#1e1e1e] text-black dark:text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <div className="flex flex-col h-screen">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="flex flex-col h-screen bg-white dark:bg-[#1e1e1e] text-black dark:text-white">
             {/* Top System Bar */}
             <div className="bg-gray-200 dark:bg-[#3c3c3c] h-8 flex items-center justify-between px-4 border-b border-gray-300 dark:border-[#252526]">
               {/* macOS window controls */}
@@ -80,23 +75,12 @@ export default function RootLayout({
 
             <div className="flex flex-1 overflow-hidden">
               {/* Icon Sidebar */}
-              <IconSidebar onToggleExplorer={toggleExplorer} onToggleSearch={toggleSearch} />
+              <IconSidebar onToggleExplorer={handleToggleExplorer} onToggleSearch={handleToggleSearch} />
 
               {/* Explorer/Search Panel */}
-              {(showExplorer || showSearch) && (
-                <div className="w-64 bg-gray-100 dark:bg-[#252526] overflow-y-auto border-r border-gray-200 dark:border-[#1e1e1e]">
-                  {showExplorer && <FileExplorer />}
-                  {showSearch && (
-                    <div className="p-4 text-gray-800 dark:text-[#cccccc]">
-                      <input
-                        type="text"
-                        placeholder="Search"
-                        className="w-full bg-white dark:bg-[#3c3c3c] text-gray-800 dark:text-[#cccccc] p-2 rounded"
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
+              <div className="w-64 bg-gray-100 dark:bg-[#252526] overflow-y-auto border-r border-gray-200 dark:border-[#1e1e1e]">
+                <FileExplorer />
+              </div>
 
               {/* Main Content Area */}
               <div className="flex-1 overflow-hidden flex flex-col bg-white dark:bg-[#1e1e1e]">
