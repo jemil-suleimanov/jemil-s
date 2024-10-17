@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useTheme } from 'next-themes';
+import { FaSun, FaMoon } from 'react-icons/fa';
 
 const ThemeSwitcher: React.FC = () => {
   const { theme, setTheme } = useTheme();
@@ -9,9 +10,9 @@ const ThemeSwitcher: React.FC = () => {
   return (
     <button
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700"
+      className="p-2 rounded hover:bg-[#3c3c3c]"
     >
-      {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+      {theme === 'dark' ? <FaSun className="text-[#cccccc]" /> : <FaMoon className="text-[#cccccc]" />}
     </button>
   );
 };

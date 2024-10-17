@@ -19,22 +19,22 @@ const Tabs: React.FC<TabsProps> = ({ tabs, onCloseTab }) => {
   const pathname = usePathname();
 
   return (
-    <div className="flex bg-gray-200 dark:bg-gray-800 overflow-x-auto">
+    <div className="flex bg-gray-100 dark:bg-[#252526] overflow-x-auto">
       {tabs.map((tab) => (
         <div
           key={tab.path}
-          className={`flex items-center px-4 py-2 border-r border-gray-300 dark:border-gray-700 ${
-            pathname === tab.path ? 'bg-white dark:bg-gray-900' : ''
+          className={`flex items-center px-4 py-2 border-r border-gray-200 dark:border-[#1e1e1e] ${
+            pathname === tab.path ? 'bg-white dark:bg-[#1e1e1e]' : 'bg-gray-50 dark:bg-[#2d2d2d]'
           }`}
         >
-          <Link href={tab.path} className="mr-2">
+          <Link href={tab.path} className="mr-2 text-sm text-gray-800 dark:text-[#cccccc]">
             {tab.name}
           </Link>
           <button
             onClick={() => onCloseTab(tab.path)}
-            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            className="text-gray-500 dark:text-[#cccccc] hover:text-gray-700 dark:hover:text-white"
           >
-            <IoClose />
+            <IoClose size={16} />
           </button>
         </div>
       ))}
