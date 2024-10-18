@@ -2,28 +2,28 @@
 
 import React from 'react';
 import { useTheme } from 'next-themes';
-import { useFontSize } from '../contexts/FontSizeContext';
-import { useFontFamily } from '../contexts/FontFamilyContext';
+import { useFontSize } from '../app/contexts/FontSizeContext';
+import { useFontFamily } from '../app/contexts/FontFamilyContext';
 
 const themes = ['light', 'dark', 'system'];
 const fontSizes = ['small', 'medium', 'large'];
 const fontFamilies = ['monospace', 'sans-serif', 'serif'];
 
-const Settings: React.FC = () => {
+const SettingsSidebar: React.FC = () => {
   const { theme, setTheme } = useTheme();
   const { fontSize, setFontSize } = useFontSize();
   const { fontFamily, setFontFamily } = useFontFamily();
 
   return (
-    <div className="min-h-screen p-8 bg-gray-100 dark:bg-[#1e1e1e] text-gray-800 dark:text-[#cccccc]">
-      <h2 className="text-3xl font-bold mb-6">Settings</h2>
-      <div className="space-y-6">
+    <div className="w-64 bg-gray-100 dark:bg-[#252526] p-4 overflow-y-auto border-l border-gray-200 dark:border-[#1e1e1e]">
+      <h2 className="text-xl font-bold mb-4">Settings</h2>
+      <div className="space-y-4">
         <div>
-          <h3 className="text-xl font-semibold mb-2">Theme</h3>
+          <h3 className="text-lg font-semibold mb-2">Theme</h3>
           <select 
             value={theme} 
             onChange={(e) => setTheme(e.target.value)}
-            className="bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
+            className="w-full bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
           >
             {themes.map((t) => (
               <option key={t} value={t}>
@@ -33,11 +33,11 @@ const Settings: React.FC = () => {
           </select>
         </div>
         <div>
-          <h3 className="text-xl font-semibold mb-2">Font Size</h3>
+          <h3 className="text-lg font-semibold mb-2">Font Size</h3>
           <select 
             value={fontSize} 
             onChange={(e) => setFontSize(e.target.value as 'small' | 'medium' | 'large')}
-            className="bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
+            className="w-full bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
           >
             {fontSizes.map((size) => (
               <option key={size} value={size}>{size.charAt(0).toUpperCase() + size.slice(1)}</option>
@@ -45,11 +45,11 @@ const Settings: React.FC = () => {
           </select>
         </div>
         <div>
-          <h3 className="text-xl font-semibold mb-2">Font Family</h3>
+          <h3 className="text-lg font-semibold mb-2">Font Family</h3>
           <select 
             value={fontFamily} 
             onChange={(e) => setFontFamily(e.target.value as 'monospace' | 'sans-serif' | 'serif')}
-            className="bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
+            className="w-full bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
           >
             {fontFamilies.map((family) => (
               <option key={family} value={family}>{family}</option>
@@ -61,4 +61,4 @@ const Settings: React.FC = () => {
   );
 };
 
-export default Settings;
+export default SettingsSidebar;

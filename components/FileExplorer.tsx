@@ -40,7 +40,14 @@ const fileStructure: FileItem[] = [
       { name: 'post2.md', type: 'file', path: '/blog/2' },
     ],
   },
-  { name: 'settings.tsx', type: 'file', path: '/settings' },
+  {
+    name: 'Config',
+    type: 'folder',
+    path: '/config',
+    children: [
+      { name: 'settings.tsx', type: 'file', path: '/settings' },
+    ],
+  },
 ];
 
 const FileExplorer: React.FC = () => {

@@ -1,44 +1,46 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import localFont from "next/font/local";
-import "./globals.css";
 import { ThemeProvider } from 'next-themes';
 import { usePathname, useRouter } from 'next/navigation';
 import FileExplorer from '../components/FileExplorer';
 import ThemeSwitcher from '../components/ThemeSwitcher';
 import Tabs from '../components/Tabs';
 import IconSidebar from '../components/IconSidebar';
+import SettingsSidebar from '../components/SettingsSidebar';
+import AIChatSidebar from '../components/AIChatSidebar';
 import { FontSizeProvider, useFontSize } from './contexts/FontSizeContext';
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+import { FontFamilyProvider, useFontFamily } from './contexts/FontFamilyContext';
+import "./globals.css";
 
 const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const { fontSize } = useFontSize();
+  const { fontFamily } = useFontFamily();
+  const [openTabs, setOpenTabs] = useState<{ id: string; name: string; path: string }[]>([
+    { id: 'home', name: 'page.tsx', path: '/' }
+  ]);
+  const [activeSidebars, setActiveSidebars] = useState({
+    explorer: true,
+    search: false,
+    settings: false,
+    aiChat: false
+  });
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     document.documentElement.style.fontSize = 
       fontSize === 'small' ? '14px' : fontSize === 'medium' ? '16px' : '18px';
   }, [fontSize]);
 
-  const [openTabs, setOpenTabs] = useState<{ name: string; path: string }[]>([
-    { name: 'page.tsx', path: '/' }
-  ]);
-  const pathname = usePathname();
-  const router = useRouter();
+  useEffect(() => {
+    document.documentElement.style.fontFamily = fontFamily;
+  }, [fontFamily]);
 
   useEffect(() => {
     const currentPath = pathname;
     let tabName = 'page.tsx';
+    let tabId = 'home';
 
     if (currentPath !== '/') {
       const pathParts = currentPath.split('/');
@@ -46,27 +48,30 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
       
       if (pathParts[1] === 'projects') {
         tabName = `project${lastPart}.tsx`;
+        tabId = `project-${lastPart}`;
       } else if (pathParts[1] === 'blog') {
         tabName = `post${lastPart}.md`;
+        tabId = `blog-${lastPart}`;
       } else {
         tabName = `${lastPart}.tsx`;
+        tabId = lastPart;
       }
     }
 
     if (!openTabs.some(tab => tab.path === currentPath)) {
-      setOpenTabs(prev => [...prev, { name: tabName, path: currentPath }]);
+      setOpenTabs(prev => [...prev, { id: tabId, name: tabName, path: currentPath }]);
     }
-  }, [pathname]);
+  }, [pathname, openTabs]);
 
-  const handleCloseTab = (path: string) => {
+  const handleCloseTab = (id: string) => {
     setOpenTabs(prev => {
-      const index = prev.findIndex(tab => tab.path === path);
+      const index = prev.findIndex(tab => tab.id === id);
       if (index === -1) return prev;
 
-      const newTabs = prev.filter(tab => tab.path !== path);
+      const newTabs = prev.filter(tab => tab.id !== id);
       
       // If we're closing the current tab, navigate to the tab to the left or the first tab
-      if (path === pathname) {
+      if (prev[index].path === pathname) {
         const newPath = index > 0 ? prev[index - 1].path : (newTabs[0]?.path || '/');
         router.push(newPath);
       }
@@ -75,18 +80,19 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const handleToggleExplorer = () => {
-    // Implement explorer toggle functionality
-    console.log('Toggle explorer');
-  };
+  const [leftSidebar, setLeftSidebar] = useState<'explorer' | 'search' | null>('explorer');
+  const [rightSidebar, setRightSidebar] = useState<'settings' | 'aiChat' | null>(null);
 
-  const handleToggleSearch = () => {
-    // Implement search toggle functionality
-    console.log('Toggle search');
+  const toggleSidebar = (sidebar: 'explorer' | 'search' | 'settings' | 'aiChat') => {
+    if (sidebar === 'explorer' || sidebar === 'search') {
+      setLeftSidebar(prev => prev === sidebar ? null : sidebar);
+    } else {
+      setRightSidebar(prev => prev === sidebar ? null : sidebar);
+    }
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white dark:bg-[#1e1e1e] text-black dark:text-white">
+    <div className={`flex flex-col h-screen bg-white dark:bg-[#1e1e1e] text-black dark:text-white`} style={{ fontFamily }}>
       {/* Top System Bar */}
       <div className="bg-gray-200 dark:bg-[#3c3c3c] h-8 flex items-center justify-between px-4 border-b border-gray-300 dark:border-[#252526]">
         {/* macOS window controls */}
@@ -100,21 +106,41 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Icon Sidebar */}
-        <IconSidebar onToggleExplorer={handleToggleExplorer} onToggleSearch={handleToggleSearch} />
+        <IconSidebar
+          onToggleExplorer={() => toggleSidebar('explorer')}
+          onToggleSearch={() => toggleSidebar('search')}
+          onToggleSettings={() => toggleSidebar('settings')}
+          onToggleAIChat={() => toggleSidebar('aiChat')}
+          activeSidebars={{
+            explorer: leftSidebar === 'explorer',
+            search: leftSidebar === 'search',
+            settings: rightSidebar === 'settings',
+            aiChat: rightSidebar === 'aiChat'
+          }}
+        />
 
-        {/* Explorer/Search Panel */}
-        <div className="w-64 bg-gray-100 dark:bg-[#252526] overflow-y-auto border-r border-gray-200 dark:border-[#1e1e1e]">
-          <FileExplorer />
-        </div>
+        {leftSidebar && (
+          <div className="w-64 bg-gray-100 dark:bg-[#252526] overflow-y-auto border-r border-gray-200 dark:border-[#1e1e1e]">
+            {leftSidebar === 'explorer' && <FileExplorer />}
+            {leftSidebar === 'search' && (
+              <div className="p-4">Search functionality coming soon...</div>
+            )}
+          </div>
+        )}
 
-        {/* Main Content Area */}
         <div className="flex-1 overflow-hidden flex flex-col bg-white dark:bg-[#1e1e1e]">
           <Tabs tabs={openTabs} onCloseTab={handleCloseTab} />
           <div className="flex-1 overflow-y-auto p-4">
             {children}
           </div>
         </div>
+
+        {rightSidebar && (
+          <div className="w-64 bg-gray-100 dark:bg-[#252526] overflow-y-auto border-l border-gray-200 dark:border-[#1e1e1e]">
+            {rightSidebar === 'settings' && <SettingsSidebar />}
+            {rightSidebar === 'aiChat' && <AIChatSidebar />}
+          </div>
+        )}
       </div>
 
       {/* Bottom Terminal (placeholder for future implementation) */}
@@ -132,12 +158,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <FontSizeProvider>
-            <RootLayoutContent>{children}</RootLayoutContent>
+            <FontFamilyProvider>
+              <RootLayoutContent>{children}</RootLayoutContent>
+            </FontFamilyProvider>
           </FontSizeProvider>
         </ThemeProvider>
       </body>
