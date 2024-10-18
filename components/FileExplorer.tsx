@@ -27,8 +27,8 @@ const fileStructure: FileItem[] = [
     type: 'folder',
     path: '/projects',
     children: [
-      { name: 'project1.py', type: 'file', path: '/projects/1' },
-      { name: 'project2.php', type: 'file', path: '/projects/2' },
+      { name: 'project1.tsx', type: 'file', path: '/projects/1' },
+      { name: 'project2.tsx', type: 'file', path: '/projects/2' },
     ],
   },
   {

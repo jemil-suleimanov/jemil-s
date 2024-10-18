@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useTheme } from 'next-themes';
+import { useFontSize } from '../contexts/FontSizeContext';
 
 const themes = ['light', 'dark', 'system'];
-const fontSizes = ['12px', '14px', '16px', '18px', '20px'];
-const fontFamilies = ['Geist Sans', 'Geist Mono', 'Arial', 'Helvetica', 'Times New Roman'];
+const fontSizes = ['small', 'medium', 'large'];
 
 const Settings: React.FC = () => {
   const { theme, setTheme } = useTheme();
-  const [fontSize, setFontSize] = useState('16px');
-  const [fontFamily, setFontFamily] = useState('Geist Sans');
+  const { fontSize, setFontSize } = useFontSize();
 
   return (
     <div className="min-h-screen p-8 bg-gray-100 dark:bg-[#1e1e1e] text-gray-800 dark:text-[#cccccc]">
@@ -34,23 +33,11 @@ const Settings: React.FC = () => {
           <h3 className="text-xl font-semibold mb-2">Font Size</h3>
           <select 
             value={fontSize} 
-            onChange={(e) => setFontSize(e.target.value)}
+            onChange={(e) => setFontSize(e.target.value as 'small' | 'medium' | 'large')}
             className="bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
           >
             {fontSizes.map((size) => (
-              <option key={size} value={size}>{size}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <h3 className="text-xl font-semibold mb-2">Font Family</h3>
-          <select 
-            value={fontFamily} 
-            onChange={(e) => setFontFamily(e.target.value)}
-            className="bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
-          >
-            {fontFamilies.map((font) => (
-              <option key={font} value={font}>{font}</option>
+              <option key={size} value={size}>{size.charAt(0).toUpperCase() + size.slice(1)}</option>
             ))}
           </select>
         </div>
