@@ -3,12 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from 'next-themes';
 import { usePathname, useRouter } from 'next/navigation';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 import FileExplorer from '../components/FileExplorer';
 import ThemeSwitcher from '../components/ThemeSwitcher';
 import Tabs from '../components/Tabs';
 import IconSidebar from '../components/IconSidebar';
 import SettingsSidebar from '../components/SettingsSidebar';
 import AIChatSidebar from '../components/AIChatSidebar';
+import ReduxTest from '../components/ReduxTest';
 import { FontSizeProvider, useFontSize } from './contexts/FontSizeContext';
 import { FontFamilyProvider, useFontFamily } from './contexts/FontFamilyContext';
 import "./globals.css";
@@ -131,6 +134,7 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
         <div className="flex-1 overflow-hidden flex flex-col bg-white dark:bg-[#1e1e1e]">
           <Tabs tabs={openTabs} onCloseTab={handleCloseTab} />
           <div className="flex-1 overflow-y-auto p-4">
+            <ReduxTest />
             {children}
           </div>
         </div>
@@ -159,13 +163,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <FontSizeProvider>
-            <FontFamilyProvider>
-              <RootLayoutContent>{children}</RootLayoutContent>
-            </FontFamilyProvider>
-          </FontSizeProvider>
-        </ThemeProvider>
+        <Provider store={store}>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <FontSizeProvider>
+              <FontFamilyProvider>
+                <RootLayoutContent>{children}</RootLayoutContent>
+              </FontFamilyProvider>
+            </FontSizeProvider>
+          </ThemeProvider>
+        </Provider>
       </body>
     </html>
   );
