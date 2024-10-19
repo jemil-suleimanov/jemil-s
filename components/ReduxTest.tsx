@@ -1,33 +1,28 @@
 import React from 'react';
-import { useAppSelector, useAppDispatch } from '../app/store/hooks';
-import { increment, decrement, incrementByAmount } from '../app/store/store';
+import { useAppSelector, useAppDispatch } from '../app/lib/hooks';
+import { setTheme } from '../app/lib/store';
 
 const ReduxTest: React.FC = () => {
-  const count = useAppSelector((state) => state.counter.value);
+  const theme = useAppSelector((state) => state.theme.value);
   const dispatch = useAppDispatch();
 
   return (
     <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Redux Test</h2>
-      <p className="mb-4">Count: {count}</p>
+      <p className="mb-4">Theme: {theme}</p>
+
       <div className="space-x-2">
         <button
-          onClick={() => dispatch(increment())}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => dispatch(setTheme('dark'))}
+          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
         >
-          Increment
+          Set Dark Theme
         </button>
         <button
-          onClick={() => dispatch(decrement())}
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => dispatch(setTheme('light'))}
+          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
         >
-          Decrement
-        </button>
-        <button
-          onClick={() => dispatch(incrementByAmount(5))}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Increment by 5
+          Set Light Theme
         </button>
       </div>
     </div>

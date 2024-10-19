@@ -1,16 +1,17 @@
 "use client";
 
 import React from 'react';
-import { useTheme } from 'next-themes';
 import { useFontSize } from '../app/contexts/FontSizeContext';
 import { useFontFamily } from '../app/contexts/FontFamilyContext';
+import { useAppDispatch, useAppSelector } from '@/app/lib/hooks';
+import { setTheme, Theme, themes } from '@/app/lib/store';
 
-const themes = ['light', 'dark', 'system'];
 const fontSizes = ['small', 'medium', 'large'];
 const fontFamilies = ['monospace', 'sans-serif', 'serif'];
 
 const SettingsSidebar: React.FC = () => {
-  const { theme, setTheme } = useTheme();
+  const theme = useAppSelector((state) => state.theme.value);
+  const dispatch = useAppDispatch();
   const { fontSize, setFontSize } = useFontSize();
   const { fontFamily, setFontFamily } = useFontFamily();
 
@@ -22,12 +23,12 @@ const SettingsSidebar: React.FC = () => {
           <h3 className="text-lg font-semibold mb-2">Theme</h3>
           <select 
             value={theme} 
-            onChange={(e) => setTheme(e.target.value)}
+            onChange={(e) => dispatch(setTheme(e.target.value as Theme))}
             className="w-full bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
           >
             {themes.map((t) => (
               <option key={t} value={t}>
-                {t.charAt(0).toUpperCase() + t.slice(1)}
+                {t}
               </option>
             ))}
           </select>

@@ -58,7 +58,6 @@ const Home: React.FC = () => {
             transform scale-110
             z-0
           "></div>
-          <span className="relative z-10">👨‍💻</span>
         </div>
       </div>
     </div>

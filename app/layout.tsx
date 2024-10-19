@@ -1,10 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { ThemeProvider } from 'next-themes';
 import { usePathname, useRouter } from 'next/navigation';
-import { Provider } from 'react-redux';
-import { store } from './store/store';
 import FileExplorer from '../components/FileExplorer';
 import ThemeSwitcher from '../components/ThemeSwitcher';
 import Tabs from '../components/Tabs';
@@ -15,6 +12,7 @@ import ReduxTest from '../components/ReduxTest';
 import { FontSizeProvider, useFontSize } from './contexts/FontSizeContext';
 import { FontFamilyProvider, useFontFamily } from './contexts/FontFamilyContext';
 import "./globals.css";
+import StoreProvider from '../components/StoreProvider';
 
 const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const { fontSize } = useFontSize();
@@ -22,12 +20,7 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const [openTabs, setOpenTabs] = useState<{ id: string; name: string; path: string }[]>([
     { id: 'home', name: 'page.tsx', path: '/' }
   ]);
-  const [activeSidebars, setActiveSidebars] = useState({
-    explorer: true,
-    search: false,
-    settings: false,
-    aiChat: false
-  });
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -163,15 +156,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Provider store={store}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <StoreProvider>
             <FontSizeProvider>
               <FontFamilyProvider>
                 <RootLayoutContent>{children}</RootLayoutContent>
               </FontFamilyProvider>
             </FontSizeProvider>
-          </ThemeProvider>
-        </Provider>
+        </StoreProvider>
       </body>
     </html>
   );
