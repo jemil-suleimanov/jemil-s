@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { FaSun, FaMoon } from 'react-icons/fa';
+import { FaSun, FaMoon, FaRocket } from 'react-icons/fa';
 import { useAppSelector, useAppDispatch } from '../app/lib/hooks';
-import { setTheme } from '../app/lib/store';
+import { setTheme, Theme, themes } from '../app/lib/store';
 
 const ThemeSwitcher: React.FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -18,13 +18,30 @@ const ThemeSwitcher: React.FC = () => {
     return null;
   }
 
+  const cycleTheme = () => {
+    const currentIndex = themes.indexOf(theme);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    dispatch(setTheme(themes[nextIndex]));
+  };
+
+  const getThemeIcon = (currentTheme: Theme) => {
+    switch (currentTheme) {
+      case 'light':
+        return <FaSun className="text-gray-800" />;
+      case 'dark':
+        return <FaMoon className="text-[#cccccc]" />;
+      case 'synthwave':
+        return <FaRocket className="text-[#ff7edb]" />;
+    }
+  };
+
   return (
     <button
-      onClick={() => dispatch(setTheme(theme === 'dark' ? 'light' : 'dark'))}
-      className="p-2 rounded hover:bg-gray-200 dark:hover:bg-[#3c3c3c]"
+      onClick={cycleTheme}
+      className="p-2 rounded hover:bg-gray-200 dark:hover:bg-[#3c3c3c] synthwave:hover:bg-[#3d2e5a]"
       aria-label="Toggle theme"
     >
-      {theme === 'dark' ? <FaSun className="text-[#cccccc]" /> : <FaMoon className="text-gray-800" />}
+      {getThemeIcon(theme)}
     </button>
   );
 };

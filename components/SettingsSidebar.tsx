@@ -16,7 +16,7 @@ const SettingsSidebar: React.FC = () => {
   const { fontFamily, setFontFamily } = useFontFamily();
 
   return (
-    <div className="w-64 bg-gray-100 dark:bg-[#252526] p-4 overflow-y-auto border-l border-gray-200 dark:border-[#1e1e1e]">
+    <div className="w-64  dark:bg-[#252526] p-4 overflow-y-auto border-l border-gray-200 dark:border-[#1e1e1e]">
       <h2 className="text-xl font-bold mb-4">Settings</h2>
       <div className="space-y-4">
         <div>
@@ -24,7 +24,7 @@ const SettingsSidebar: React.FC = () => {
           <select 
             value={theme} 
             onChange={(e) => dispatch(setTheme(e.target.value as Theme))}
-            className="w-full bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
+            className="w-full dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
           >
             {themes.map((t) => (
               <option key={t} value={t}>

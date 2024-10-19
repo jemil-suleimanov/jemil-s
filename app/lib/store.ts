@@ -1,8 +1,8 @@
 import { configureStore, PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-export type Theme = 'light' | 'dark' | 'system';
+export type Theme = 'light' | 'dark' | 'synthwave';
 
-export const themes: Theme[] = ['light', 'dark', 'system'];
+export const themes: Theme[] = ['light', 'dark', 'synthwave'];
 
 interface ThemeState {
     value: Theme;

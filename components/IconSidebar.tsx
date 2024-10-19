@@ -24,7 +24,7 @@ const IconSidebar: React.FC<IconSidebarProps> = ({
   activeSidebars 
 }) => {
   return (
-    <div className="w-12 bg-gray-200 dark:bg-[#333333] flex flex-col items-center py-4 justify-between">
+    <div className="w-12 dark:bg-[#333333] flex flex-col items-center py-4 justify-between">
       <div>
         <button
           onClick={onToggleExplorer}

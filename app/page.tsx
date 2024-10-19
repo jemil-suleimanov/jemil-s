@@ -31,15 +31,15 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-[#1e1e1e] text-gray-800 dark:text-[#cccccc] font-mono">
+    <div className="min-h-screen flex items-center justify-center bg-background text-foreground font-mono">
       <div className="w-full max-w-4xl p-8">
         <h1 className="text-6xl font-bold mb-4">Jemil Suleimanov</h1>
         <p className="text-2xl mb-8">Frontend Developer</p>
         <div className="space-y-2">
-          <p className="cursor-pointer hover:text-blue-500">
+          <p className="cursor-pointer hover:text-primary">
             viewWork = () =&gt; &#123; /* View my projects */ &#125;
           </p>
-          <p className="cursor-pointer hover:text-blue-500">
+          <p className="cursor-pointer hover:text-primary">
             contactMe = () =&gt; &#123; /* Get in touch */ &#125;
           </p>
         </div>
@@ -53,7 +53,7 @@ const Home: React.FC = () => {
         ">
           <div className="
             absolute inset-0
-            bg-gradient-to-br from-blue-300 to-purple-300 dark:from-blue-600 dark:to-purple-600
+            bg-gradient-to-br from-primary to-secondary
             opacity-50 blur-2xl
             transform scale-110
             z-0

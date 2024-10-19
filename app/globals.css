@@ -22,6 +22,16 @@
   --terminal-bg: #1e1e1e;
 }
 
+.synthwave {
+  --background: #2b213a;
+  --foreground: #ff7edb;
+  --primary: #f92aad;
+  --secondary: #72f1b8;
+  --sidebar-bg: #241b2f;
+  --sidebar-fg: #ff7edb;
+  --terminal-bg: #1a1a2e;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);

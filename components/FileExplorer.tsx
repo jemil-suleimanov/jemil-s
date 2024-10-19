@@ -80,20 +80,20 @@ const FileExplorer: React.FC = () => {
     return (
       <div key={item.path} style={{ paddingLeft: `${depth * 12}px` }}>
         <div 
-          className={`flex items-center py-1 hover:bg-gray-200 dark:hover:bg-[#2a2d2e] text-gray-800 dark:text-[#cccccc] cursor-pointer ${
+          className={`flex items-center py-1 hover:bg-opacity-10 hover:bg-white cursor-pointer ${
             item.type === 'folder' ? 'font-semibold' : ''
           }`}
           onClick={() => handleItemClick(item)}
         >
           {item.type === 'folder' && (
-            isOpen ? <FaChevronDown className="mr-2 text-gray-500 dark:text-[#cccccc]" size={10} /> 
-                   : <FaChevronRight className="mr-2 text-gray-500 dark:text-[#cccccc]" size={10} />
+            isOpen ? <FaChevronDown className="mr-2 text-sidebar-fg" size={10} /> 
+                   : <FaChevronRight className="mr-2 text-sidebar-fg" size={10} />
           )}
           {item.type === 'folder' 
-            ? (isOpen ? <FaFolderOpen className="mr-2 text-yellow-500 dark:text-[#c09553]" /> : <FaFolder className="mr-2 text-yellow-500 dark:text-[#c09553]" />)
-            : <FaFile className="mr-2 text-gray-500 dark:text-[#cccccc]" />
+            ? (isOpen ? <FaFolderOpen className="mr-2 text-yellow-500" /> : <FaFolder className="mr-2 text-yellow-500" />)
+            : <FaFile className="mr-2 text-sidebar-fg" />
           }
-          <span className="text-sm">{item.name}</span>
+          <span className="text-sm text-sidebar-fg">{item.name}</span>
         </div>
         {item.children && isOpen && (
           <div>
@@ -105,7 +105,7 @@ const FileExplorer: React.FC = () => {
   };
 
   return (
-    <div className="p-4 text-gray-800 dark:text-[#cccccc]">
+    <div className="p-4 text-sidebar-fg">
       <h2 className="text-sm font-semibold mb-4 uppercase">Explorer</h2>
       {fileStructure.map(item => renderFileItem(item))}
     </div>

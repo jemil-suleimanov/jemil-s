@@ -8,11 +8,8 @@ export default function ThemeHandler() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    document.documentElement.classList.remove('light', 'dark', 'synthwave');
+    document.documentElement.classList.add(theme);
   }, [theme]);
 
   return null;
