@@ -11,8 +11,9 @@ import AIChatSidebar from '../components/AIChatSidebar';
 import ReduxTest from '../components/ReduxTest';
 import { FontSizeProvider, useFontSize } from './contexts/FontSizeContext';
 import { FontFamilyProvider, useFontFamily } from './contexts/FontFamilyContext';
-import "./globals.css";
 import StoreProvider from '../components/StoreProvider';
+import ThemeHandler from '../components/ThemeHandler';
+import "./globals.css";
 
 const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
   const { fontSize } = useFontSize();
@@ -66,7 +67,6 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
 
       const newTabs = prev.filter(tab => tab.id !== id);
       
-      // If we're closing the current tab, navigate to the tab to the left or the first tab
       if (prev[index].path === pathname) {
         const newPath = index > 0 ? prev[index - 1].path : (newTabs[0]?.path || '/');
         router.push(newPath);
@@ -88,16 +88,14 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <div className={`flex flex-col h-screen bg-white dark:bg-[#1e1e1e] text-black dark:text-white`} style={{ fontFamily }}>
+    <div className="flex flex-col h-screen bg-background text-foreground">
       {/* Top System Bar */}
       <div className="bg-gray-200 dark:bg-[#3c3c3c] h-8 flex items-center justify-between px-4 border-b border-gray-300 dark:border-[#252526]">
-        {/* macOS window controls */}
         <div className="flex space-x-2">
           <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
           <div className="w-3 h-3 rounded-full bg-[#febc2e]"></div>
           <div className="w-3 h-3 rounded-full bg-[#28c840]"></div>
         </div>
-        {/* Theme Switcher */}
         <ThemeSwitcher />
       </div>
 
@@ -124,7 +122,7 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
           </div>
         )}
 
-        <div className="flex-1 overflow-hidden flex flex-col bg-white dark:bg-[#1e1e1e]">
+        <div className="flex-1 overflow-hidden flex flex-col bg-background">
           <Tabs tabs={openTabs} onCloseTab={handleCloseTab} />
           <div className="flex-1 overflow-y-auto p-4">
             <ReduxTest />
@@ -157,11 +155,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <StoreProvider>
-            <FontSizeProvider>
-              <FontFamilyProvider>
-                <RootLayoutContent>{children}</RootLayoutContent>
-              </FontFamilyProvider>
-            </FontSizeProvider>
+          <ThemeHandler />
+          <FontSizeProvider>
+            <FontFamilyProvider>
+              <RootLayoutContent>{children}</RootLayoutContent>
+            </FontFamilyProvider>
+          </FontSizeProvider>
         </StoreProvider>
       </body>
     </html>
