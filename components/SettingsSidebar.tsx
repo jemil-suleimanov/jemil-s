@@ -1,61 +1,86 @@
 "use client";
 
 import React from 'react';
+import { useAppSelector, useAppDispatch } from '../app/lib/hooks';
+import { setFontFamily, FontFamily, fontFamilies, setTheme, Theme, themes } from '../app/lib/store';
 import { useFontSize } from '../app/contexts/FontSizeContext';
-import { useFontFamily } from '../app/contexts/FontFamilyContext';
-import { useAppDispatch, useAppSelector } from '@/app/lib/hooks';
-import { setTheme, Theme, themes } from '@/app/lib/store';
-
-const fontSizes = ['small', 'medium', 'large'];
-const fontFamilies = ['monospace', 'sans-serif', 'serif'];
 
 const SettingsSidebar: React.FC = () => {
-  const theme = useAppSelector((state) => state.theme.value);
   const dispatch = useAppDispatch();
+  const currentFontFamily = useAppSelector((state) => state.fontFamily.value);
+  const currentTheme = useAppSelector((state) => state.theme.value);
   const { fontSize, setFontSize } = useFontSize();
-  const { fontFamily, setFontFamily } = useFontFamily();
+
+  const handleFontFamilyChange = (newFontFamily: FontFamily) => {
+    dispatch(setFontFamily(newFontFamily));
+  };
+
+  const handleThemeChange = (newTheme: Theme) => {
+    dispatch(setTheme(newTheme));
+  };
+
+  const handleFontSizeChange = (newSize: 'small' | 'medium' | 'large') => {
+    setFontSize(newSize);
+  };
 
   return (
-    <div className="w-64  dark:bg-[#252526] p-4 overflow-y-auto border-l border-gray-200 dark:border-[#1e1e1e]">
-      <h2 className="text-xl font-bold mb-4">Settings</h2>
-      <div className="space-y-4">
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Theme</h3>
-          <select 
-            value={theme} 
-            onChange={(e) => dispatch(setTheme(e.target.value as Theme))}
-            className="w-full dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
-          >
-            {themes.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
+    <div className="p-4">
+      <h2 className="text-lg font-semibold mb-4">Settings</h2>
+      
+      <div className="mb-6">
+        <h3 className="text-md font-semibold mb-2">Theme</h3>
+        <div className="flex flex-col space-y-2">
+          {themes.map((theme) => (
+            <button
+              key={theme}
+              className={`px-3 py-1 rounded ${
+                currentTheme === theme
+                  ? 'bg-primary text-white'
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              }`}
+              onClick={() => handleThemeChange(theme)}
+            >
+              {theme.charAt(0).toUpperCase() + theme.slice(1)}
+            </button>
+          ))}
         </div>
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Font Size</h3>
-          <select 
-            value={fontSize} 
-            onChange={(e) => setFontSize(e.target.value as 'small' | 'medium' | 'large')}
-            className="w-full bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
-          >
-            {fontSizes.map((size) => (
-              <option key={size} value={size}>{size.charAt(0).toUpperCase() + size.slice(1)}</option>
-            ))}
-          </select>
+      </div>
+
+      <div className="mb-6">
+        <h3 className="text-md font-semibold mb-2">Font Family</h3>
+        <div className="flex flex-col space-y-2">
+          {fontFamilies.map((family) => (
+            <button
+              key={family}
+              className={`px-3 py-1 rounded ${
+                currentFontFamily === family
+                  ? 'bg-primary text-white'
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              }`}
+              onClick={() => handleFontFamilyChange(family)}
+            >
+              {family}
+            </button>
+          ))}
         </div>
-        <div>
-          <h3 className="text-lg font-semibold mb-2">Font Family</h3>
-          <select 
-            value={fontFamily} 
-            onChange={(e) => setFontFamily(e.target.value as 'monospace' | 'sans-serif' | 'serif')}
-            className="w-full bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
-          >
-            {fontFamilies.map((family) => (
-              <option key={family} value={family}>{family}</option>
-            ))}
-          </select>
+      </div>
+
+      <div className="mb-6">
+        <h3 className="text-md font-semibold mb-2">Font Size</h3>
+        <div className="flex flex-col space-y-2">
+          {['small', 'medium', 'large'].map((size) => (
+            <button
+              key={size}
+              className={`px-3 py-1 rounded ${
+                fontSize === size
+                  ? 'bg-primary text-white'
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              }`}
+              onClick={() => handleFontSizeChange(size as 'small' | 'medium' | 'large')}
+            >
+              {size.charAt(0).toUpperCase() + size.slice(1)}
+            </button>
+          ))}
         </div>
       </div>
     </div>

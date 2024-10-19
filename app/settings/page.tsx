@@ -1,28 +1,33 @@
 "use client";
 
 import React from 'react';
-import { useTheme } from 'next-themes';
+import { useAppSelector, useAppDispatch } from '../lib/hooks';
+import { setTheme, setFontFamily, Theme, FontFamily, themes, fontFamilies } from '../lib/store';
 import { useFontSize } from '../contexts/FontSizeContext';
-import { useFontFamily } from '../contexts/FontFamilyContext';
-
-const themes = ['light', 'dark', 'system'];
-const fontSizes = ['small', 'medium', 'large'];
-const fontFamilies = ['monospace', 'sans-serif', 'serif'];
 
 const Settings: React.FC = () => {
-  const { theme, setTheme } = useTheme();
+  const dispatch = useAppDispatch();
+  const theme = useAppSelector((state) => state.theme.value);
+  const fontFamily = useAppSelector((state) => state.fontFamily.value);
   const { fontSize, setFontSize } = useFontSize();
-  const { fontFamily, setFontFamily } = useFontFamily();
+
+  const handleThemeChange = (newTheme: Theme) => {
+    dispatch(setTheme(newTheme));
+  };
+
+  const handleFontFamilyChange = (newFontFamily: FontFamily) => {
+    dispatch(setFontFamily(newFontFamily));
+  };
 
   return (
-    <div className="min-h-screen p-8 bg-gray-100 dark:bg-[#1e1e1e] text-gray-800 dark:text-[#cccccc]">
+    <div className="min-h-screen p-8 bg-background text-foreground">
       <h2 className="text-3xl font-bold mb-6">Settings</h2>
       <div className="space-y-6">
         <div>
           <h3 className="text-xl font-semibold mb-2">Theme</h3>
           <select 
             value={theme} 
-            onChange={(e) => setTheme(e.target.value)}
+            onChange={(e) => handleThemeChange(e.target.value as Theme)}
             className="bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
           >
             {themes.map((t) => (
@@ -39,7 +44,7 @@ const Settings: React.FC = () => {
             onChange={(e) => setFontSize(e.target.value as 'small' | 'medium' | 'large')}
             className="bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
           >
-            {fontSizes.map((size) => (
+            {['small', 'medium', 'large'].map((size) => (
               <option key={size} value={size}>{size.charAt(0).toUpperCase() + size.slice(1)}</option>
             ))}
           </select>
@@ -48,7 +53,7 @@ const Settings: React.FC = () => {
           <h3 className="text-xl font-semibold mb-2">Font Family</h3>
           <select 
             value={fontFamily} 
-            onChange={(e) => setFontFamily(e.target.value as 'monospace' | 'sans-serif' | 'serif')}
+            onChange={(e) => handleFontFamilyChange(e.target.value as FontFamily)}
             className="bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
           >
             {fontFamilies.map((family) => (

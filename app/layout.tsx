@@ -10,14 +10,13 @@ import SettingsSidebar from '../components/SettingsSidebar';
 import AIChatSidebar from '../components/AIChatSidebar';
 import ReduxTest from '../components/ReduxTest';
 import { FontSizeProvider, useFontSize } from './contexts/FontSizeContext';
-import { FontFamilyProvider, useFontFamily } from './contexts/FontFamilyContext';
 import StoreProvider from '../components/StoreProvider';
 import ThemeHandler from '../components/ThemeHandler';
+import FontFamilyHandler from '../components/FontFamilyHandler';
 import "./globals.css";
 
-const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
+const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode }) => {
   const { fontSize } = useFontSize();
-  const { fontFamily } = useFontFamily();
   const [openTabs, setOpenTabs] = useState<{ id: string; name: string; path: string }[]>([
     { id: 'home', name: 'page.tsx', path: '/' }
   ]);
@@ -30,9 +29,7 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
       fontSize === 'small' ? '14px' : fontSize === 'medium' ? '16px' : '18px';
   }, [fontSize]);
 
-  useEffect(() => {
-    document.documentElement.style.fontFamily = fontFamily;
-  }, [fontFamily]);
+  // Remove the fontFamily effect from here
 
   useEffect(() => {
     const currentPath = pathname;
@@ -86,6 +83,8 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
       setRightSidebar(prev => prev === sidebar ? null : sidebar);
     }
   };
+
+  RootLayoutContent.displayName = 'RootLayoutContent';
 
   return (
     <div className="flex flex-col h-screen bg-background text-foreground">
@@ -144,7 +143,7 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
       </div>
     </div>
   );
-};
+});
 
 export default function RootLayout({
   children,
@@ -156,10 +155,9 @@ export default function RootLayout({
       <body>
         <StoreProvider>
           <ThemeHandler />
+          <FontFamilyHandler />
           <FontSizeProvider>
-            <FontFamilyProvider>
-              <RootLayoutContent>{children}</RootLayoutContent>
-            </FontFamilyProvider>
+            <RootLayoutContent>{children}</RootLayoutContent>
           </FontSizeProvider>
         </StoreProvider>
       </body>

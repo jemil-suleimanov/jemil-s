@@ -17,9 +17,9 @@ module.exports = {
         'sidebar-fg': 'var(--sidebar-fg)',
       },
       fontFamily: {
-        'monospace': ['monospace'],
-        'sans': ['sans-serif'],
-        'serif': ['serif'],
+        sans: 'var(--font-sans)',
+        serif: 'var(--font-serif)',
+        mono: 'var(--font-mono)',
       },
       fontSize: {
         'xs': '0.75rem',
