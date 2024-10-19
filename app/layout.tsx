@@ -90,7 +90,7 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex flex-col h-screen bg-background text-foreground">
       {/* Top System Bar */}
-      <div className="bg-gray-200 dark:bg-[#3c3c3c] h-8 flex items-center justify-between px-4 border-b border-gray-300 dark:border-[#252526]">
+      <div className="bg-sidebar-bg text-sidebar-fg h-8 flex items-center justify-between px-4 border-b border-gray-300 dark:border-[#252526]">
         <div className="flex space-x-2">
           <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
           <div className="w-3 h-3 rounded-full bg-[#febc2e]"></div>
@@ -114,7 +114,7 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
         />
 
         {leftSidebar && (
-          <div className="w-64 bg-gray-100 dark:bg-[#252526] overflow-y-auto border-r border-gray-200 dark:border-[#1e1e1e]">
+          <div className="w-64 bg-sidebar-bg text-sidebar-fg overflow-y-auto border-r border-gray-200 dark:border-[#1e1e1e]">
             {leftSidebar === 'explorer' && <FileExplorer />}
             {leftSidebar === 'search' && (
               <div className="p-4">Search functionality coming soon...</div>
@@ -122,7 +122,7 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
           </div>
         )}
 
-        <div className="flex-1 overflow-hidden flex flex-col bg-background">
+        <div className="flex-1 overflow-hidden flex flex-col bg-background text-foreground">
           <Tabs tabs={openTabs} onCloseTab={handleCloseTab} />
           <div className="flex-1 overflow-y-auto p-4">
             <ReduxTest />
@@ -131,15 +131,15 @@ const RootLayoutContent = ({ children }: { children: React.ReactNode }) => {
         </div>
 
         {rightSidebar && (
-          <div className="w-64 bg-gray-100 dark:bg-[#252526] overflow-y-auto border-l border-gray-200 dark:border-[#1e1e1e]">
+          <div className="w-64 bg-sidebar-bg text-sidebar-fg overflow-y-auto border-l border-gray-200 dark:border-[#1e1e1e]">
             {rightSidebar === 'settings' && <SettingsSidebar />}
             {rightSidebar === 'aiChat' && <AIChatSidebar />}
           </div>
         )}
       </div>
 
-      {/* Bottom Terminal (placeholder for future implementation) */}
-      <div className="h-32 bg-gray-100 dark:bg-[#1e1e1e] border-t border-gray-200 dark:border-[#252526]">
+      {/* Bottom Terminal */}
+      <div className="h-32 bg-[var(--terminal-bg)] text-sidebar-fg border-t border-gray-200 dark:border-[#252526]">
         {/* Terminal content (to be implemented) */}
       </div>
     </div>

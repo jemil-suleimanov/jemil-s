@@ -13,6 +13,8 @@ module.exports = {
         foreground: 'var(--foreground)',
         primary: 'var(--primary)',
         secondary: 'var(--secondary)',
+        'sidebar-bg': 'var(--sidebar-bg)',
+        'sidebar-fg': 'var(--sidebar-fg)',
       },
       fontFamily: {
         'monospace': ['monospace'],
