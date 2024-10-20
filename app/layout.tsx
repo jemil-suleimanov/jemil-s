@@ -8,26 +8,19 @@ import Tabs from '../components/Tabs';
 import IconSidebar from '../components/IconSidebar';
 import SettingsSidebar from '../components/SettingsSidebar';
 import AIChatSidebar from '../components/AIChatSidebar';
-import ReduxTest from '../components/ReduxTest';
-import { FontSizeProvider, useFontSize } from './contexts/FontSizeContext';
 import StoreProvider from '../components/StoreProvider';
 import ThemeHandler from '../components/ThemeHandler';
 import FontFamilyHandler from '../components/FontFamilyHandler';
 import "./globals.css";
+import FontSizeHandler from '../components/FontSizeHandler';
 
 const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode }) => {
-  const { fontSize } = useFontSize();
   const [openTabs, setOpenTabs] = useState<{ id: string; name: string; path: string }[]>([
     { id: 'home', name: 'page.tsx', path: '/' }
   ]);
 
   const pathname = usePathname();
   const router = useRouter();
-
-  useEffect(() => {
-    document.documentElement.style.fontSize = 
-      fontSize === 'small' ? '14px' : fontSize === 'medium' ? '16px' : '18px';
-  }, [fontSize]);
 
   // Remove the fontFamily effect from here
 
@@ -124,7 +117,6 @@ const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode 
         <div className="flex-1 overflow-hidden flex flex-col bg-background text-foreground">
           <Tabs tabs={openTabs} onCloseTab={handleCloseTab} />
           <div className="flex-1 overflow-y-auto p-4">
-            <ReduxTest />
             {children}
           </div>
         </div>
@@ -156,9 +148,8 @@ export default function RootLayout({
         <StoreProvider>
           <ThemeHandler />
           <FontFamilyHandler />
-          <FontSizeProvider>
-            <RootLayoutContent>{children}</RootLayoutContent>
-          </FontSizeProvider>
+          <FontSizeHandler />
+          <RootLayoutContent>{children}</RootLayoutContent>
         </StoreProvider>
       </body>
     </html>

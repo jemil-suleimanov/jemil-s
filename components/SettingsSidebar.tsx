@@ -2,15 +2,13 @@
 
 import React from 'react';
 import { useAppSelector, useAppDispatch } from '../app/lib/hooks';
-import { setFontFamily, FontFamily, fontFamilies, setTheme, Theme, themes } from '../app/lib/store';
-import { useFontSize } from '../app/contexts/FontSizeContext';
+import { setFontFamily, FontFamily, fontFamilies, setTheme, Theme, themes, setFontSize } from '../app/lib/store';
 
 const SettingsSidebar: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentFontFamily = useAppSelector((state) => state.fontFamily.value);
   const currentTheme = useAppSelector((state) => state.theme.value);
-  const { fontSize, setFontSize } = useFontSize();
-
+  const fontSize = useAppSelector((state) => state.fontSize.value);
   const handleFontFamilyChange = (newFontFamily: FontFamily) => {
     dispatch(setFontFamily(newFontFamily));
   };

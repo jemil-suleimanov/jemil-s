@@ -2,14 +2,13 @@
 
 import React from 'react';
 import { useAppSelector, useAppDispatch } from '../lib/hooks';
-import { setTheme, setFontFamily, Theme, FontFamily, themes, fontFamilies } from '../lib/store';
-import { useFontSize } from '../contexts/FontSizeContext';
+import { setTheme, setFontFamily, setFontSize, Theme, FontFamily, FontSize, themes, fontFamilies, fontSizes } from '../lib/store';
 
 const Settings: React.FC = () => {
   const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.theme.value);
   const fontFamily = useAppSelector((state) => state.fontFamily.value);
-  const { fontSize, setFontSize } = useFontSize();
+  const fontSize = useAppSelector((state) => state.fontSize.value);
 
   const handleThemeChange = (newTheme: Theme) => {
     dispatch(setTheme(newTheme));
@@ -17,6 +16,10 @@ const Settings: React.FC = () => {
 
   const handleFontFamilyChange = (newFontFamily: FontFamily) => {
     dispatch(setFontFamily(newFontFamily));
+  };
+
+  const handleFontSizeChange = (newFontSize: FontSize) => {
+    dispatch(setFontSize(newFontSize));
   };
 
   return (
@@ -41,10 +44,10 @@ const Settings: React.FC = () => {
           <h3 className="text-xl font-semibold mb-2">Font Size</h3>
           <select 
             value={fontSize} 
-            onChange={(e) => setFontSize(e.target.value as 'small' | 'medium' | 'large')}
+            onChange={(e) => handleFontSizeChange(e.target.value as FontSize)}
             className="bg-white dark:bg-[#2d2d2d] border border-gray-300 dark:border-gray-700 rounded px-3 py-2"
           >
-            {['small', 'medium', 'large'].map((size) => (
+            {fontSizes.map((size) => (
               <option key={size} value={size}>{size.charAt(0).toUpperCase() + size.slice(1)}</option>
             ))}
           </select>
