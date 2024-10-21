@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useParams } from 'next/navigation';
-import Image from 'next/image';
 
 // Simulating data from a Headless CMS
 const blogPosts = [

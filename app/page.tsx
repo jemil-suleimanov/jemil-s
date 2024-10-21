@@ -1,34 +1,6 @@
-'use client'
+import React from 'react';
 
-import React, { useEffect, useRef } from 'react';
-
-const Home: React.FC = () => {
-  const emojiRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-emoji');
-          } else {
-            entry.target.classList.remove('animate-emoji');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (emojiRef.current) {
-      observer.observe(emojiRef.current);
-    }
-
-    return () => {
-      if (emojiRef.current) {
-        observer.unobserve(emojiRef.current);
-      }
-    };
-  }, []);
+const Home: React.FC = async () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background text-foreground font-mono">
@@ -45,7 +17,7 @@ const Home: React.FC = () => {
         </div>
       </div>
       <div className="absolute top-1/2 right-20 transform -translate-y-1/2">
-        <div ref={emojiRef} className="
+        <div className="
           text-9xl sm:text-[12rem] md:text-[16rem] lg:text-[20rem]
           transition-all duration-300
           relative

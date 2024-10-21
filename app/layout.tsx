@@ -66,15 +66,25 @@ const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode 
     });
   };
 
-  const [leftSidebar, setLeftSidebar] = useState<'explorer' | 'search' | null>('explorer');
+  const [leftSidebar, setLeftSidebar] = useState<'explorer' | 'search' | 'blog' | null>('explorer');
   const [rightSidebar, setRightSidebar] = useState<'settings' | 'aiChat' | null>(null);
 
-  const toggleSidebar = (sidebar: 'explorer' | 'search' | 'settings' | 'aiChat') => {
-    if (sidebar === 'explorer' || sidebar === 'search') {
+  const toggleSidebar = (sidebar: 'explorer' | 'search' | 'blog' | 'settings' | 'aiChat') => {
+    if (sidebar === 'explorer' || sidebar === 'search' || sidebar === 'blog') {
       setLeftSidebar(prev => prev === sidebar ? null : sidebar);
     } else {
       setRightSidebar(prev => prev === sidebar ? null : sidebar);
     }
+  };
+
+  const handleBlogClick = () => {
+    router.push('/blog');
+    setOpenTabs(prev => {
+      if (!prev.some(tab => tab.id === 'blog')) {
+        return [...prev, { id: 'blog', name: 'blog.js', path: '/blog' }];
+      }
+      return prev;
+    });
   };
 
   RootLayoutContent.displayName = 'RootLayoutContent';
@@ -97,11 +107,13 @@ const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode 
           onToggleSearch={() => toggleSidebar('search')}
           onToggleSettings={() => toggleSidebar('settings')}
           onToggleAIChat={() => toggleSidebar('aiChat')}
+          onToggleBlog={handleBlogClick}
           activeSidebars={{
             explorer: leftSidebar === 'explorer',
             search: leftSidebar === 'search',
+            blog: pathname === '/blog',
             settings: rightSidebar === 'settings',
-            aiChat: rightSidebar === 'aiChat'
+            aiChat: rightSidebar === 'aiChat',
           }}
         />
 
@@ -110,6 +122,9 @@ const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode 
             {leftSidebar === 'explorer' && <FileExplorer />}
             {leftSidebar === 'search' && (
               <div className="p-4">Search functionality coming soon...</div>
+            )}
+            {leftSidebar === 'blog' && (
+              <div className="p-4">Blog functionality coming soon...</div>
             )}
           </div>
         )}

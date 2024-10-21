@@ -34,10 +34,10 @@ const fileStructure: FileItem[] = [
   {
     name: 'Blog',
     type: 'folder',
-    path: '/blog',
+    path: '/posts',
     children: [
-      { name: 'post1.md', type: 'file', path: '/blog/1' },
-      { name: 'post2.md', type: 'file', path: '/blog/2' },
+      { name: 'post1.md', type: 'file', path: '/posts/1' },
+      { name: 'post2.md', type: 'file', path: '/posts/2' },
     ],
   },
   {
