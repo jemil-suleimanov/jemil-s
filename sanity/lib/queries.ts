@@ -1,8 +1,13 @@
 // ./src/sanity/lib/queries.ts
 
-import { defineQuery } from "next-sanity";
+import { groq } from 'next-sanity';
 
-export const POSTS_QUERY =
-  defineQuery(`*[_type == "post" && defined(slug.current)][0...12]{
-  _id, title, slug, shortDescription, publishedAt, mainImage
-}`);
+export const POSTS_QUERY = groq`*[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
+  _id,
+  title,
+  shortDescription,
+  publishedAt,
+  slug,
+} [0...$limit]`;
+
+export const TOTAL_POSTS_COUNT = groq`count(*[_type == "post" && defined(slug.current)])`;

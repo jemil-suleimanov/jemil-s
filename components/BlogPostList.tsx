@@ -6,7 +6,7 @@ interface BlogPost {
     title: string;
     shortDescription: string;
     publishedAt: string;
-    slug: { current: string };
+    slug: { current: string } | null;
 }
 
 interface BlogPostListProps {
@@ -19,8 +19,8 @@ const BlogPostList: React.FC<BlogPostListProps> = ({ posts }) => {
       {posts.map((post) => (
         <Link
           key={post._id}
-          href={`/blog/${post.slug.current}`}
-          className="block group"
+          href={post.slug ? `/blog/${post.slug.current}` : '#'}
+          className={`block group ${!post.slug ? 'cursor-not-allowed' : ''}`}
         >
           <article className="bg-gradient-to-br from-white to-gray-100 dark:from-gray-800 dark:to-gray-900 synthwave:from-purple-900 synthwave:to-pink-900 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 dark:border-gray-700 synthwave:border-pink-700">
             <div className="p-6 sm:p-8">
@@ -38,12 +38,14 @@ const BlogPostList: React.FC<BlogPostListProps> = ({ posts }) => {
                     day: 'numeric'
                   })}
                 </time>
-                <span className="text-indigo-600 dark:text-indigo-400 synthwave:text-cyan-400 font-semibold group-hover:text-indigo-700 dark:group-hover:text-indigo-300 synthwave:group-hover:text-cyan-300 transition-colors duration-300 flex items-center">
-                  Read More
-                  <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
+                {post.slug && (
+                  <span className="text-indigo-600 dark:text-indigo-400 synthwave:text-cyan-400 font-semibold group-hover:text-indigo-700 dark:group-hover:text-indigo-300 synthwave:group-hover:text-cyan-300 transition-colors duration-300 flex items-center">
+                    Read More
+                    <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                )}
               </div>
             </div>
           </article>
