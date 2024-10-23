@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-interface BlogPost {
+export interface BlogPost {
     _id: string;
     title: string;
     shortDescription: string;

@@ -1,42 +1,35 @@
 'use client'
 
-import React, { useState, useCallback } from 'react';
-import { sanityFetch } from '@/sanity/lib/client';
-import { POSTS_QUERY, TOTAL_POSTS_COUNT } from '@/sanity/lib/queries';
-import BlogPostList from '@/components/BlogPostList';
+import React, { useState, useEffect, useCallback } from 'react';
+import BlogPostList, { BlogPost } from '@/components/BlogPostList';
 
 const POSTS_PER_PAGE = 5;
 
 export default function BlogPage() {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [totalPosts, setTotalPosts] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const loadMorePosts = useCallback(async () => {
+  const fetchPosts = useCallback(async (limit: number) => {
     setLoading(true);
-    const newPosts = await sanityFetch({
-      query: POSTS_QUERY,
-      params: { limit: posts.length + POSTS_PER_PAGE }
-    });
-    setPosts(newPosts);
+    try {
+      const response = await fetch(`/api/posts?limit=${limit}`);
+      const data = await response.json();
+      setPosts(data.posts);
+      setTotalPosts(data.totalPosts);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
     setLoading(false);
-  }, [posts.length]);
-
-  React.useEffect(() => {
-    const fetchInitialData = async () => {
-      setLoading(true);
-      const initialPosts = await sanityFetch({
-        query: POSTS_QUERY,
-        params: { limit: POSTS_PER_PAGE }
-      });
-      setPosts(initialPosts);
-      const total = await sanityFetch({ query: TOTAL_POSTS_COUNT });
-      setTotalPosts(total);
-      setLoading(false);
-    };
-
-    fetchInitialData();
   }, []);
+
+  useEffect(() => {
+    fetchPosts(POSTS_PER_PAGE);
+  }, [fetchPosts]);
+
+  const loadMorePosts = useCallback(() => {
+    fetchPosts(posts.length + POSTS_PER_PAGE);
+  }, [fetchPosts, posts.length]);
 
   return (
     <div className="blog-page bg-background text-foreground min-h-screen">
