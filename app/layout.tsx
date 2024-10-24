@@ -22,8 +22,6 @@ const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const router = useRouter();
 
-  // Remove the fontFamily effect from here
-
   useEffect(() => {
     const currentPath = pathname;
     let tabName = 'page.tsx';

@@ -3,7 +3,7 @@ import React from 'react';
 const Home: React.FC = async () => {
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background text-foreground font-mono">
+    <div className="h-full flex items-center justify-center bg-background text-foreground font-mono">
       <div className="w-full max-w-4xl p-8">
         <h1 className="text-6xl font-bold mb-4">Jemil Suleimanov</h1>
         <p className="text-2xl mb-8">Frontend Developer</p>

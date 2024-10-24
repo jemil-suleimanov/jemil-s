@@ -18,7 +18,7 @@ const SettingsSidebar: React.FC = () => {
   };
 
   const handleFontSizeChange = (newSize: 'small' | 'medium' | 'large') => {
-    setFontSize(newSize);
+    dispatch(setFontSize(newSize));
   };
 
   return (
