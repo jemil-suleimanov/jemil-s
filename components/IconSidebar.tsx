@@ -1,20 +1,18 @@
 "use client";
 
 import React from 'react';
-import { FaFolder, FaSearch, FaCog, FaRobot, FaBook } from 'react-icons/fa';
+import { FaFolder, FaSearch, FaCog, FaRobot } from 'react-icons/fa';
 
 interface IconSidebarProps {
   onToggleExplorer: () => void;
   onToggleSearch: () => void;
   onToggleSettings: () => void;
   onToggleAIChat: () => void;
-  onToggleBlog: () => void;
   activeSidebars: {
     explorer: boolean;
     search: boolean;
     settings: boolean;
     aiChat: boolean;
-    blog: boolean;
   };
 }
 
@@ -23,7 +21,6 @@ const IconSidebar: React.FC<IconSidebarProps> = ({
   onToggleSearch, 
   onToggleSettings, 
   onToggleAIChat,
-  onToggleBlog,
   activeSidebars 
 }) => {
   return (
@@ -40,12 +37,6 @@ const IconSidebar: React.FC<IconSidebarProps> = ({
           className={`p-2 ${activeSidebars.search ? 'bg-white dark:bg-[#252526]' : 'hover:bg-gray-300 dark:hover:bg-[#2a2d2e]'}`}
         >
           <FaSearch className="text-gray-600 dark:text-[#cccccc]" size={24} />
-        </button>
-        <button
-          onClick={onToggleBlog}
-          className={`p-2 ${activeSidebars.blog ? 'bg-white dark:bg-[#252526]' : 'hover:bg-gray-300 dark:hover:bg-[#2a2d2e]'}`}
-        >
-          <FaBook className="text-gray-600 dark:text-[#cccccc]" size={24} />
         </button>
       </div>
       <div>

@@ -37,7 +37,6 @@ const fileStructure: FileItem[] = [
     path: '/posts',
     children: [
       { name: 'post1.md', type: 'file', path: '/posts/1' },
-      { name: 'post2.md', type: 'file', path: '/posts/2' },
     ],
   },
   {
