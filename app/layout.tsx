@@ -22,8 +22,6 @@ const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const router = useRouter();
 
-  // Remove the fontFamily effect from here
-
   useEffect(() => {
     const currentPath = pathname;
     let tabName = 'page.tsx';
@@ -77,16 +75,6 @@ const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode 
     }
   };
 
-  const handleBlogClick = () => {
-    router.push('/blog');
-    setOpenTabs(prev => {
-      if (!prev.some(tab => tab.id === 'blog')) {
-        return [...prev, { id: 'blog', name: 'blog.js', path: '/blog' }];
-      }
-      return prev;
-    });
-  };
-
   RootLayoutContent.displayName = 'RootLayoutContent';
 
   return (
@@ -107,11 +95,9 @@ const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode 
           onToggleSearch={() => toggleSidebar('search')}
           onToggleSettings={() => toggleSidebar('settings')}
           onToggleAIChat={() => toggleSidebar('aiChat')}
-          onToggleBlog={handleBlogClick}
           activeSidebars={{
             explorer: leftSidebar === 'explorer',
             search: leftSidebar === 'search',
-            blog: pathname === '/blog',
             settings: rightSidebar === 'settings',
             aiChat: rightSidebar === 'aiChat',
           }}

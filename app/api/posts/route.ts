@@ -1,20 +1,26 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@sanity/client';
-import { POSTS_QUERY, TOTAL_POSTS_COUNT } from '@/sanity/lib/queries';
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
 
-const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  apiVersion: '2023-05-03',
-  useCdn: false,
-});
+const postsDirectory = path.join(process.cwd(), 'data');
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const limit = Number(searchParams.get('limit') || '5');
+export async function GET() {
+    const filenames = fs.readdirSync(postsDirectory);
 
-  const posts = await client.fetch(POSTS_QUERY, { limit });
-  const totalPosts = await client.fetch(TOTAL_POSTS_COUNT);
+    const posts = filenames.map((filename) => {
+        const filePath = path.join(postsDirectory, filename, 'index.md');
+        const fileContents = fs.readFileSync(filePath, 'utf8');
+        
+        const { data } = matter(fileContents);
 
-  return NextResponse.json({ posts, totalPosts });
+        console.log(data, 'data')
+
+        return {
+            slug: filename,
+            data,
+        };
+    });
+
+    return NextResponse.json(posts);
 }
