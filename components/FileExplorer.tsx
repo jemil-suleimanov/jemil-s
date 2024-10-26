@@ -27,16 +27,7 @@ const fileStructure: FileItem[] = [
     type: 'folder',
     path: '/projects',
     children: [
-      { name: 'project1.tsx', type: 'file', path: '/projects/1' },
-      { name: 'project2.tsx', type: 'file', path: '/projects/2' },
-    ],
-  },
-  {
-    name: 'Blog',
-    type: 'folder',
-    path: '/posts',
-    children: [
-      { name: 'post1.md', type: 'file', path: '/posts/1' },
+      { name: 'git-diff-ai.tsx', type: 'file', path: '/projects/1' },
     ],
   },
   {
