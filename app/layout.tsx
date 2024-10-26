@@ -64,6 +64,15 @@ const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode 
     });
   };
 
+  const handleAddTab = (path: string, name: string) => {
+    setOpenTabs(prev => {
+      if (prev.some(tab => tab.path === path)) {
+        return prev; // Tab already exists, don't add a duplicate
+      }
+      return [...prev, { id: path, name, path }];
+    });
+  };
+
   const [leftSidebar, setLeftSidebar] = useState<'explorer' | 'search' | 'blog' | null>('explorer');
   const [rightSidebar, setRightSidebar] = useState<'settings' | 'aiChat' | null>(null);
 
@@ -116,9 +125,8 @@ const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode 
         )}
 
         <div className="flex-1 overflow-hidden flex flex-col bg-background text-foreground">
-          <Tabs tabs={openTabs} onCloseTab={handleCloseTab} />
+          <Tabs tabs={openTabs} onCloseTab={handleCloseTab} onAddTab={handleAddTab} />
           <div className="flex-1 overflow-y-auto p-4 dark:border-gray-700">
-
             {children}
           </div>
         </div>
