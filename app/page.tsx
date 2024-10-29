@@ -56,7 +56,7 @@ const Home: React.FC = () => {
               </div>
             ) : (
               <span className="text-gray-500">
-                {" "}/* {isContactHovered ? "Click!" : "Get in touch"} */
+                {" "} {isContactHovered ? "Click!" : "Get in touch"} 
               </span>
             )}
             {" "}&#125;
