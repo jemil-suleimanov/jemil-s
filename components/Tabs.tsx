@@ -4,6 +4,8 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { IoClose } from 'react-icons/io5';
+import { DiReact } from 'react-icons/di';
+import { SiVuedotjs, SiJson } from 'react-icons/si';
 
 interface Tab {
   id: string;
@@ -45,6 +47,20 @@ const Tabs: React.FC<TabsProps> = ({ tabs, onCloseTab, onAddTab }) => {
     }
   }, []);
 
+  // Add function to determine file type and return appropriate icon
+  const getTabIcon = (path: string) => {
+    if (path === '/' || path.startsWith('/about') || path.startsWith('/skills')) {
+      return <DiReact className="mr-2 text-[#61DAFB]" />;
+    }
+    if (path.startsWith('/projects')) {
+      return <SiVuedotjs className="mr-2 text-[#4FC08D]" />;
+    }
+    if (path.startsWith('/settings')) {
+      return <SiJson className="mr-2 text-[#FAC54B]" />;
+    }
+    return null;
+  };
+
   return (
     <div className="flex bg-sidebar-bg text-sidebar-fg overflow-x-auto">
       {uniqueTabs.map((tab) => (
@@ -54,7 +70,8 @@ const Tabs: React.FC<TabsProps> = ({ tabs, onCloseTab, onAddTab }) => {
             tab.path === pathname ? 'bg-background text-foreground' : ''
           }`}
         >
-          <Link href={tab.path} className="mr-2 text-sm">
+          <Link href={tab.path} className="flex items-center mr-2 text-sm">
+            {getTabIcon(tab.path)}
             {tab.name}
           </Link>
           <button
