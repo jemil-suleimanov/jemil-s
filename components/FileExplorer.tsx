@@ -76,7 +76,8 @@ const FileExplorer: React.FC = () => {
     if (item.type === 'folder') {
       toggleFolder(item.path);
     } else {
-      router.push(item.path);
+      console.log('item.name', item);
+      router.push(`${item.path}?tab=${item.name + item.extension}`)
     }
   };
 
