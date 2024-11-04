@@ -1,44 +1,34 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { usePathname, useSearchParams, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { IoClose } from 'react-icons/io5';
 import { DiReact } from 'react-icons/di';
 import { SiVuedotjs, SiJson } from 'react-icons/si';
-
-interface Tab {
-  name: string;
-  path: string;
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/app/lib/store';
+import { removeTab } from '@/app/lib/slices/tabs.slice';
 
 const Tabs: React.FC = () => {
-  const [tabs, setTabs] = useState<Tab[]>([{ name: 'page.tsx', path: '/' }]);
+  const tabs = useSelector((state: RootState) => state.tabs.tabs);
+  const dispatch = useDispatch();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const router = useRouter();
 
-  useEffect(() => {
-    console.log('use effect');
-    const tabParam = searchParams.get('tab');
-    if (tabParam && !tabs.some(tab => tab.path === pathname)) {
-      setTabs(prev => [...prev, { name: tabParam, path: pathname }]);
-    }
-  }, [pathname, searchParams, tabs]);
+  const handleCloseTab = async (path: string) => {
+    if (tabs.length <= 1) return;
 
-  const handleCloseTab = (path: string) => {
-    setTabs(prev => {
-      const newTabs = prev.filter(tab => tab.path !== path);
-      
-      if (path === pathname) {
-        const lastTab = newTabs[newTabs.length - 1];
-        if (lastTab) {
-          router.push(lastTab.path);
-        }
-      }
-      
-      return newTabs;
-    });
+    const tabIndex = tabs.findIndex(tab => tab.path === path);
+    const remainingTabs = tabs.filter(tab => tab.path !== path);
+    
+    if (path === pathname) {
+      const nextTab = remainingTabs[tabIndex - 1] || remainingTabs[tabIndex];
+      dispatch(removeTab(path));
+      await router.push(nextTab.path);
+    } else {
+      dispatch(removeTab(path));
+    }
   };
 
   const getTabIcon = (path: string) => {
