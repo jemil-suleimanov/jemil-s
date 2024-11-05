@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import FileExplorer from '../components/FileExplorer';
 import ThemeSwitcher from '../components/ThemeSwitcher';
 import Tabs from '../components/Tabs';
@@ -11,10 +11,9 @@ import StoreProvider from '../components/StoreProvider';
 import ThemeHandler from '../components/ThemeHandler';
 import FontFamilyHandler from '../components/FontFamilyHandler';
 import FontSizeHandler from '../components/FontSizeHandler';
+import { RouteHandler } from '@/components/RouteHandler';
 import "./globals.css";
-import { useDispatch } from 'react-redux';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { addTab } from '@/app/lib/slices/tabs.slice';
+
 const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode }) => {
   const [leftSidebar, setLeftSidebar] = useState<'explorer' | 'search' | 'blog' | null>('explorer');
   const [rightSidebar, setRightSidebar] = useState<'settings' | 'aiChat' | null>(null);
@@ -108,29 +107,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
-
-
-export function RouteHandler() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const dispatch = useDispatch();
-
-  console.log('pathname', pathname);
-
-  useEffect(() => {
-    // Get the filename from the last segment of the path
-    const segments = pathname.split('/');
-    const fileName = segments[segments.length - 1] || 'page';
-    const tabName = searchParams.get('tab') || `${fileName}.tsx`;
-
-    console.log('tabName', tabName);
-
-    dispatch(addTab({
-      name: tabName,
-      path: pathname
-    }));
-  }, [pathname, searchParams, dispatch]);
-
-  return null;
 }
