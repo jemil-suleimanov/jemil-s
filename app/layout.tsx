@@ -1,7 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import FileExplorer from '../components/FileExplorer';
 import ThemeSwitcher from '../components/ThemeSwitcher';
 import Tabs from '../components/Tabs';
@@ -13,66 +12,10 @@ import ThemeHandler from '../components/ThemeHandler';
 import FontFamilyHandler from '../components/FontFamilyHandler';
 import FontSizeHandler from '../components/FontSizeHandler';
 import "./globals.css";
-
+import { useDispatch } from 'react-redux';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { addTab } from '@/app/lib/slices/tabs.slice';
 const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode }) => {
-  const [openTabs, setOpenTabs] = useState<{ id: string; name: string; path: string }[]>([
-    { id: 'home', name: 'page.tsx', path: '/' }
-  ]);
-
-  const pathname = usePathname();
-  const router = useRouter();
-
-  useEffect(() => {
-    const currentPath = pathname;
-    let tabName = 'page.tsx';
-    let tabId = 'home';
-
-    if (currentPath !== '/') {
-      const pathParts = currentPath.split('/');
-      const lastPart = pathParts[pathParts.length - 1];
-      
-      if (pathParts[1] === 'projects') {
-        tabName = `project${lastPart}.tsx`;
-        tabId = `project-${lastPart}`;
-      } else if (pathParts[1] === 'blog') {
-        tabName = `post${lastPart}.md`;
-        tabId = `blog-${lastPart}`;
-      } else {
-        tabName = `${lastPart}.tsx`;
-        tabId = lastPart;
-      }
-    }
-
-    if (!openTabs.some(tab => tab.path === currentPath)) {
-      setOpenTabs(prev => [...prev, { id: tabId, name: tabName, path: currentPath }]);
-    }
-  }, [pathname, openTabs]);
-
-  const handleCloseTab = (id: string) => {
-    setOpenTabs(prev => {
-      const index = prev.findIndex(tab => tab.id === id);
-      if (index === -1) return prev;
-
-      const newTabs = prev.filter(tab => tab.id !== id);
-      
-      if (prev[index].path === pathname) {
-        const newPath = index > 0 ? prev[index - 1].path : (newTabs[0]?.path || '/');
-        router.push(newPath);
-      }
-
-      return newTabs;
-    });
-  };
-
-  const handleAddTab = (path: string, name: string) => {
-    setOpenTabs(prev => {
-      if (prev.some(tab => tab.path === path)) {
-        return prev; // Tab already exists, don't add a duplicate
-      }
-      return [...prev, { id: path, name, path }];
-    });
-  };
-
   const [leftSidebar, setLeftSidebar] = useState<'explorer' | 'search' | 'blog' | null>('explorer');
   const [rightSidebar, setRightSidebar] = useState<'settings' | 'aiChat' | null>(null);
 
@@ -125,7 +68,7 @@ const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode 
         )}
 
         <div className="flex-1 overflow-hidden flex flex-col bg-background text-foreground">
-          <Tabs tabs={openTabs} onCloseTab={handleCloseTab} onAddTab={handleAddTab} />
+          <Tabs />
           <div className="flex-1 overflow-y-auto p-4 dark:border-gray-700">
             {children}
           </div>
@@ -156,6 +99,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <StoreProvider>
+          <RouteHandler />
           <ThemeHandler />
           <FontFamilyHandler />
           <FontSizeHandler />
@@ -164,4 +108,29 @@ export default function RootLayout({
       </body>
     </html>
   );
+}
+
+
+export function RouteHandler() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const dispatch = useDispatch();
+
+  console.log('pathname', pathname);
+
+  useEffect(() => {
+    // Get the filename from the last segment of the path
+    const segments = pathname.split('/');
+    const fileName = segments[segments.length - 1] || 'page';
+    const tabName = searchParams.get('tab') || `${fileName}.tsx`;
+
+    console.log('tabName', tabName);
+
+    dispatch(addTab({
+      name: tabName,
+      path: pathname
+    }));
+  }, [pathname, searchParams, dispatch]);
+
+  return null;
 }
