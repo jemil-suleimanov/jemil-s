@@ -33,6 +33,15 @@ module.exports = {
         '5xl': '3rem',
         '6xl': '4rem',
       },
+      keyframes: {
+        pointing: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '50%': { transform: 'translateX(5px)' },
+        }
+      },
+      animation: {
+        pointing: 'pointing 1s ease-in-out infinite',
+      },
     },
   },
   plugins: [
