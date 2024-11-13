@@ -1,9 +1,6 @@
+import { Tab } from '@/app/features';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface Tab {
-  name: string;
-  path: string;
-}
 
 interface TabsState {
   tabs: Tab[];

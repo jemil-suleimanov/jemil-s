@@ -1,14 +1,14 @@
 'use client'
 
 import React, { useState } from 'react';
-import FileExplorer from '../components/FileExplorer';
-import ThemeSwitcher from '../components/ThemeSwitcher';
-import Tabs from '../components/Tabs';
+import ThemeSwitcher from '@/app/features/theme/components/ThemeSwitcher';
+import ThemeHandler from '@/app/features/theme/components/ThemeHandler';
+import FileExplorer from './features/navigation/components/FileExplorer';
+import Tabs from './features/navigation/components/Tabs';
 import IconSidebar from '../components/IconSidebar';
-import SettingsSidebar from '../components/SettingsSidebar';
+import SettingsSidebar from './features/settings/components/SettingsSidebar';
 import AIChatSidebar from '../components/AIChatSidebar';
 import StoreProvider from '../components/StoreProvider';
-import ThemeHandler from '../components/ThemeHandler';
 import FontFamilyHandler from '../components/FontFamilyHandler';
 import FontSizeHandler from '../components/FontSizeHandler';
 import { RouteHandler } from '@/components/RouteHandler';
