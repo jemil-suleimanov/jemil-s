@@ -1,5 +1,6 @@
 "use client";
 
+import { BaseSidebar } from '@/app/shared/components/layout/BaseSidebar';
 import React from 'react';
 import { FaFolder, FaSearch, FaCog, FaRobot } from 'react-icons/fa';
 
@@ -24,7 +25,7 @@ const IconSidebar: React.FC<IconSidebarProps> = ({
   activeSidebars 
 }) => {
   return (
-    <div className="w-12 dark:bg-[#333333] flex flex-col items-center py-4 justify-between">
+    <BaseSidebar width="133" className="flex flex-col items-center py-4 justify-between">
       <div>
         <button
           onClick={onToggleExplorer}
@@ -53,7 +54,7 @@ const IconSidebar: React.FC<IconSidebarProps> = ({
           <FaCog className="text-gray-600 dark:text-[#cccccc]" size={24} />
         </button>
       </div>
-    </div>
+    </BaseSidebar>
   );
 };
 

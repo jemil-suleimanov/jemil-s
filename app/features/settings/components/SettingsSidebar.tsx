@@ -1,8 +1,11 @@
 "use client";
 
 import React from 'react';
-import { useAppSelector, useAppDispatch } from '../app/lib/hooks';
-import { setFontFamily, FontFamily, fontFamilies, setTheme, Theme, themes, setFontSize } from '../app/lib/store';
+import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
+import { setFontFamily, FontFamily, fontFamilies, setFontSize } from '../../../lib/store';
+import { Theme } from '../../theme';
+import { setTheme, themes } from '@/app/lib/slices/theme.slice';
+import { BaseSidebar } from '@/app/shared/components/layout/BaseSidebar';
 
 const SettingsSidebar: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -22,7 +25,7 @@ const SettingsSidebar: React.FC = () => {
   };
 
   return (
-    <div className="p-4">
+    <BaseSidebar>
       <h2 className="text-lg font-semibold mb-4">Settings</h2>
       
       <div className="mb-6">
@@ -81,7 +84,7 @@ const SettingsSidebar: React.FC = () => {
           ))}
         </div>
       </div>
-    </div>
+    </BaseSidebar>
   );
 };
 
