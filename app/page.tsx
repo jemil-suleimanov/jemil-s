@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Me from '@/public/images/me.webp';
 import { useAppSelector, useAppDispatch } from './lib/hooks';
-import { setTheme, themes } from '../app/lib/store';
+import { setTheme } from '@/app/lib/slices/theme.slice';
+import { themes } from '@/app/lib/slices/theme.slice';
 
 
 const Home: React.FC = () => {
