@@ -2,3 +2,4 @@
 export * from './theme';
 export * from './navigation';
 export * from './settings';
+export * from './ai-chat';

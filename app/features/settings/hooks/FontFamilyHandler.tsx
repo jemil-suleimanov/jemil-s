@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useAppSelector } from '../app/lib/hooks';
+import { useAppSelector } from '@/app/lib/hooks';
 
 export default function FontFamilyHandler() {
   const fontFamily = useAppSelector((state) => state.fontFamily.value);
