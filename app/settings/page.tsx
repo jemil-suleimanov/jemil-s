@@ -2,7 +2,10 @@
 
 import React from 'react';
 import { useAppSelector, useAppDispatch } from '../lib/hooks';
-import { setTheme, setFontFamily, setFontSize, Theme, FontFamily, FontSize, themes, fontFamilies, fontSizes } from '../lib/store';
+import { setFontFamily, setFontSize, FontFamily, FontSize, fontFamilies, fontSizes } from '../lib/store';
+import { Theme } from '../features';
+import { setTheme } from '../lib/slices/theme.slice';
+import { themes } from '../lib/constants';
 
 const Settings: React.FC = () => {
   const dispatch = useAppDispatch();
