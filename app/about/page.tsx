@@ -1,8 +1,9 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import hiking from '../../public/images/hiking.jpeg';
+import podcast from '../../public/sound/podcast.wav';
 
 const MountainEmojis = () => (
   <>
@@ -34,6 +35,121 @@ const MountainEmojis = () => (
     </span>
   </>
 );
+
+interface AudioPlayerState {
+  isPlaying: boolean;
+  currentTime: number;
+  duration: number;
+}
+
+function AudioPlayer() {
+  const [playerState, setPlayerState] = useState<AudioPlayerState>({
+    isPlaying: false,
+    currentTime: 0,
+    duration: 0,
+  });
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const togglePlayPause = () => {
+    if (audioRef.current) {
+      if (playerState.isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setPlayerState(prev => ({ ...prev, isPlaying: !prev.isPlaying }));
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setPlayerState(prev => ({
+        ...prev,
+        currentTime: audioRef.current!.currentTime,
+        duration: audioRef.current!.duration,
+      }));
+    }
+  };
+
+  const seek = (amount: number) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = Math.max(0, Math.min(audioRef.current.currentTime + amount, audioRef.current.duration));
+    }
+  };
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <div className="relative">
+      <audio
+        ref={audioRef}
+        src="/sound/podcast.wav"
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleTimeUpdate}
+      />
+      
+      <div className="flex flex-col space-y-4">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            AI-Generated Podcast
+          </span>
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            {formatTime(playerState.currentTime)} / {formatTime(playerState.duration)}
+          </span>
+        </div>
+
+        <div className="relative w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div 
+            className="absolute h-full bg-blue-500 dark:bg-blue-400 transition-all duration-150"
+            style={{ width: `${(playerState.currentTime / playerState.duration) * 100}%` }}
+          />
+          <input
+            type="range"
+            min="0"
+            max={playerState.duration || 100}
+            value={playerState.currentTime}
+            onChange={(e) => {
+              if (audioRef.current) {
+                audioRef.current.currentTime = Number(e.target.value);
+              }
+            }}
+            className="absolute w-full h-full opacity-0 cursor-pointer"
+          />
+        </div>
+
+        <div className="flex items-center justify-center space-x-6">
+          <button
+            onClick={() => seek(-10)}
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300"
+            aria-label="Rewind 10 seconds"
+          >
+            -10s
+          </button>
+
+          <button
+            onClick={togglePlayPause}
+            className="p-3 rounded-full bg-blue-500 hover:bg-blue-600 dark:bg-blue-400 dark:hover:bg-blue-500 transition-colors text-white font-medium min-w-[60px]"
+            aria-label={playerState.isPlaying ? "Pause" : "Play"}
+          >
+            {playerState.isPlaying ? "Pause" : "Play"}
+          </button>
+
+          <button
+            onClick={() => seek(10)}
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300"
+            aria-label="Forward 10 seconds"
+          >
+            +10s
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const About: React.FC = () => {
   return (
@@ -150,6 +266,26 @@ const About: React.FC = () => {
                   While finding time for movies has become more challenging, I appreciate how films offer 
                   unique perspectives and storytelling that can inspire creativity in unexpected ways.
                 </p>
+              </div>
+
+              <div className="group mt-8">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                  <span className="mr-2">🤖</span>
+                  AI Exploration & Innovation
+                </h3>
+                <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-4">
+                  I&apos;m deeply fascinated by AI technology and its potential to transform our digital landscape. 
+                  I actively experiment with various AI models and tools, from language models to creative AI applications. 
+                  This AI-generated podcast about me, created using Google&apos;s Notebook LM, is just one example of my 
+                  hands-on exploration of AI capabilities. I believe staying at the forefront of AI innovation 
+                  helps me bring fresh perspectives to my development work.
+                </p>
+
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transition-all duration-300 hover:shadow-xl">
+                  <div className="flex flex-col space-y-4">
+                    <AudioPlayer />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
