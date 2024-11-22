@@ -108,15 +108,9 @@ function AudioPlayer() {
 
   return (
     <div className="relative group">
-      {/* Animated gradient background - now conditional and more subtle */}
-      <div 
-        className={`absolute -inset-0.5 bg-gradient-to-r from-primary/40 to-secondary/40 rounded-2xl 
-          ${playerState.isPlaying ? 'opacity-75 blur-lg' : 'opacity-40 blur-md'} 
-          transition-all duration-500`}
-      ></div>
-      
-      {/* Main player container - adjusted for better contrast */}
-      <div className="relative backdrop-blur-sm bg-white/10 dark:bg-gray-800/10 rounded-2xl p-8 border border-white/10 dark:border-gray-700/10">
+      {/* Glass background with subtle border */}
+      <div className="relative backdrop-blur-lg bg-white/10 dark:bg-black/10 rounded-2xl p-8 
+        border border-white/20 dark:border-white/10 shadow-lg">
         <audio
           ref={audioRef}
           src="/sound/podcast.wav"
@@ -125,27 +119,27 @@ function AudioPlayer() {
         />
         
         <div className="flex flex-col items-center space-y-6">
-          {/* Title and Artist with better contrast */}
+          {/* Title and Artist */}
           <div className="text-center space-y-1">
-            <h4 className={`text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent
+            <h4 className={`text-xl font-bold text-gray-800 dark:text-gray-100
               ${playerState.isPlaying ? 'opacity-100' : 'opacity-90'} transition-opacity duration-500`}>
               AI-Generated Podcast
             </h4>
-            <p className="text-sm text-gray-800 dark:text-gray-200 font-medium opacity-90">
+            <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
               Notebook LM
             </p>
           </div>
 
-          {/* Progress Bar with enhanced colors */}
+          {/* Progress Bar */}
           <div className="w-full space-y-2">
-            <div className="relative w-full h-2 bg-gray-300/40 dark:bg-gray-500/40 rounded-full overflow-hidden group">
+            <div className="relative w-full h-2 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden group">
               <div 
-                className={`absolute h-full bg-gradient-to-r from-primary/90 to-secondary/90 transition-all duration-150
+                className={`absolute h-full bg-gray-800/50 dark:bg-gray-200/50 transition-all duration-150
                   ${playerState.isPlaying ? 'opacity-100' : 'opacity-90'}`}
                 style={{ width: `${(playerState.currentTime / playerState.duration) * 100}%` }}
               />
               <div 
-                className={`absolute h-full w-full opacity-0 group-hover:opacity-90 bg-gradient-to-r from-primary/70 to-secondary/70 
+                className={`absolute h-full w-full opacity-0 group-hover:opacity-90 bg-gray-800/30 dark:bg-gray-200/30
                   ${playerState.isPlaying ? 'blur-sm' : 'blur-none'} transition-all duration-300`}
                 style={{ width: `${(playerState.currentTime / playerState.duration) * 100}%` }}
               />
@@ -164,21 +158,21 @@ function AudioPlayer() {
             </div>
             
             <div className="flex justify-between text-xs font-medium px-1">
-              <span className="text-gray-800 dark:text-gray-200 opacity-90">
+              <span className="text-gray-600 dark:text-gray-400">
                 {formatTime(playerState.currentTime)}
               </span>
-              <span className="text-gray-800 dark:text-gray-200 opacity-90">
+              <span className="text-gray-600 dark:text-gray-400">
                 {formatTime(playerState.duration)}
               </span>
             </div>
           </div>
 
-          {/* Controls with enhanced backgrounds */}
+          {/* Controls */}
           <div className="flex items-center justify-center space-x-8">
             <button
               onClick={toggleMute}
-              className="p-2 rounded-full bg-white/10 dark:bg-gray-600/20 hover:bg-white/30 dark:hover:bg-gray-500/40 
-                transition-all duration-200 text-gray-800 dark:text-gray-200 opacity-90 hover:opacity-100"
+              className="p-2 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 
+                transition-all duration-200 text-gray-700 dark:text-gray-300"
               aria-label={playerState.isMuted ? "Unmute" : "Mute"}
             >
               {playerState.isMuted ? (
@@ -190,48 +184,44 @@ function AudioPlayer() {
 
             <button
               onClick={() => seek(-10)}
-              className="p-2 rounded-full bg-white/10 dark:bg-gray-600/20 hover:bg-white/30 dark:hover:bg-gray-500/40 
-                transition-all duration-200 text-gray-800 dark:text-gray-200 opacity-90 hover:opacity-100"
+              className="p-2 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 
+                transition-all duration-200 text-gray-700 dark:text-gray-300"
               aria-label="Rewind 10 seconds"
             >
               <IoPlayBackOutline className="w-6 h-6" />
             </button>
 
-            {/* Play/Pause button with enhanced contrast and glow */}
-            <div className="relative group">
-              <div 
-                className={`absolute -inset-0.5 bg-gradient-to-r from-primary to-secondary rounded-full 
-                  ${playerState.isPlaying ? 'opacity-100 blur-sm' : 'opacity-80 blur-none'} 
-                  transition-all duration-500 group-hover:opacity-100`}
-              ></div>
-              <button
-                onClick={togglePlayPause}
-                className="relative p-4 rounded-full bg-white/30 dark:bg-gray-600/30 transition-all duration-200 
-                  text-gray-800 dark:text-gray-100 transform hover:scale-105 hover:bg-white/40 dark:hover:bg-gray-500/50"
-                aria-label={playerState.isPlaying ? "Pause" : "Play"}
-              >
-                {playerState.isPlaying ? (
-                  <IoPauseOutline className="w-8 h-8" />
-                ) : (
-                  <IoPlayOutline className="w-8 h-8" />
-                )}
-              </button>
-            </div>
+            {/* Play/Pause button */}
+            <button
+              onClick={togglePlayPause}
+              className={`p-4 rounded-full transition-all duration-300 transform hover:scale-105
+                ${playerState.isPlaying 
+                  ? 'bg-black/20 dark:bg-white/20 text-gray-800 dark:text-gray-100' 
+                  : 'bg-black/10 dark:bg-white/10 text-gray-700 dark:text-gray-300'
+                } hover:bg-black/30 dark:hover:bg-white/30`}
+              aria-label={playerState.isPlaying ? "Pause" : "Play"}
+            >
+              {playerState.isPlaying ? (
+                <IoPauseOutline className="w-8 h-8" />
+              ) : (
+                <IoPlayOutline className="w-8 h-8" />
+              )}
+            </button>
 
             <button
               onClick={() => seek(10)}
-              className="p-2 rounded-full bg-white/10 dark:bg-gray-600/20 hover:bg-white/30 dark:hover:bg-gray-500/40 
-                transition-all duration-200 text-gray-800 dark:text-gray-200 opacity-90 hover:opacity-100"
+              className="p-2 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 
+                transition-all duration-200 text-gray-700 dark:text-gray-300"
               aria-label="Forward 10 seconds"
             >
               <IoPlayForwardOutline className="w-6 h-6" />
             </button>
 
-            {/* Volume Slider with enhanced colors */}
+            {/* Volume Slider */}
             <div className="relative group">
-              <div className="w-20 h-1.5 bg-gray-300/40 dark:bg-gray-500/40 rounded-full overflow-hidden">
+              <div className="w-20 h-1.5 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
                 <div 
-                  className={`h-full bg-gradient-to-r from-primary/90 to-secondary/90 transition-all duration-150
+                  className={`h-full bg-gray-800/50 dark:bg-gray-200/50 transition-all duration-150
                     ${playerState.isPlaying ? 'opacity-100' : 'opacity-90'}`}
                   style={{ width: `${playerState.volume * 100}%` }}
                 />
