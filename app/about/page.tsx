@@ -1,8 +1,9 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import hiking from '../../public/images/hiking.jpeg';
+import { IoPlayOutline, IoPauseOutline, IoPlayBackOutline, IoPlayForwardOutline, IoVolumeHighOutline, IoVolumeMuteOutline } from "react-icons/io5";
 
 const MountainEmojis = () => (
   <>
@@ -34,6 +35,213 @@ const MountainEmojis = () => (
     </span>
   </>
 );
+
+interface AudioPlayerState {
+  isPlaying: boolean;
+  currentTime: number;
+  duration: number;
+  volume: number;
+  isMuted: boolean;
+}
+
+function AudioPlayer() {
+  const [playerState, setPlayerState] = useState<AudioPlayerState>({
+    isPlaying: false,
+    currentTime: 0,
+    duration: 0,
+    volume: 1,
+    isMuted: false,
+  });
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const togglePlayPause = () => {
+    if (audioRef.current) {
+      if (playerState.isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setPlayerState(prev => ({ ...prev, isPlaying: !prev.isPlaying }));
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setPlayerState(prev => ({
+        ...prev,
+        currentTime: audioRef.current!.currentTime,
+        duration: audioRef.current!.duration,
+      }));
+    }
+  };
+
+  const seek = (amount: number) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = Math.max(0, Math.min(audioRef.current.currentTime + amount, audioRef.current.duration));
+    }
+  };
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const toggleMute = () => {
+    if (audioRef.current) {
+      const newMutedState = !playerState.isMuted;
+      audioRef.current.muted = newMutedState;
+      setPlayerState(prev => ({ ...prev, isMuted: newMutedState }));
+    }
+  };
+
+  const handleVolumeChange = (value: number) => {
+    if (audioRef.current) {
+      audioRef.current.volume = value;
+      setPlayerState(prev => ({ 
+        ...prev, 
+        volume: value,
+        isMuted: value === 0 
+      }));
+    }
+  };
+
+  return (
+    <div className="relative group">
+      {/* Glass background with subtle border */}
+      <div className="relative backdrop-blur-lg bg-white/10 dark:bg-black/10 rounded-2xl p-8 
+        border border-white/20 dark:border-white/10 shadow-lg">
+        <audio
+          ref={audioRef}
+          src="/sound/podcast.wav"
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleTimeUpdate}
+        />
+        
+        <div className="flex flex-col items-center space-y-6">
+          {/* Title and Artist */}
+          <div className="text-center space-y-1">
+            <h4 className={`text-xl font-bold text-gray-800 dark:text-gray-100
+              ${playerState.isPlaying ? 'opacity-100' : 'opacity-90'} transition-opacity duration-500`}>
+              AI-Generated Podcast
+            </h4>
+            <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+              Notebook LM
+            </p>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="w-full space-y-2">
+            <div className="relative w-full h-2 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden group">
+              <div 
+                className={`absolute h-full bg-gray-800/50 dark:bg-gray-200/50 transition-all duration-150
+                  ${playerState.isPlaying ? 'opacity-100' : 'opacity-90'}`}
+                style={{ width: `${(playerState.currentTime / playerState.duration) * 100}%` }}
+              />
+              <div 
+                className={`absolute h-full w-full opacity-0 group-hover:opacity-90 bg-gray-800/30 dark:bg-gray-200/30
+                  ${playerState.isPlaying ? 'blur-sm' : 'blur-none'} transition-all duration-300`}
+                style={{ width: `${(playerState.currentTime / playerState.duration) * 100}%` }}
+              />
+              <input
+                type="range"
+                min="0"
+                max={playerState.duration || 100}
+                value={playerState.currentTime}
+                onChange={(e) => {
+                  if (audioRef.current) {
+                    audioRef.current.currentTime = Number(e.target.value);
+                  }
+                }}
+                className="absolute w-full h-full opacity-0 cursor-pointer"
+              />
+            </div>
+            
+            <div className="flex justify-between text-xs font-medium px-1">
+              <span className="text-gray-600 dark:text-gray-400">
+                {formatTime(playerState.currentTime)}
+              </span>
+              <span className="text-gray-600 dark:text-gray-400">
+                {formatTime(playerState.duration)}
+              </span>
+            </div>
+          </div>
+
+          {/* Controls */}
+          <div className="flex items-center justify-center space-x-8">
+            <button
+              onClick={toggleMute}
+              className="p-2 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 
+                transition-all duration-200 text-gray-700 dark:text-gray-300"
+              aria-label={playerState.isMuted ? "Unmute" : "Mute"}
+            >
+              {playerState.isMuted ? (
+                <IoVolumeMuteOutline className="w-5 h-5" />
+              ) : (
+                <IoVolumeHighOutline className="w-5 h-5" />
+              )}
+            </button>
+
+            <button
+              onClick={() => seek(-10)}
+              className="p-2 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 
+                transition-all duration-200 text-gray-700 dark:text-gray-300"
+              aria-label="Rewind 10 seconds"
+            >
+              <IoPlayBackOutline className="w-6 h-6" />
+            </button>
+
+            {/* Play/Pause button */}
+            <button
+              onClick={togglePlayPause}
+              className={`p-4 rounded-full transition-all duration-300 transform hover:scale-105
+                ${playerState.isPlaying 
+                  ? 'bg-black/20 dark:bg-white/20 text-gray-800 dark:text-gray-100' 
+                  : 'bg-black/10 dark:bg-white/10 text-gray-700 dark:text-gray-300'
+                } hover:bg-black/30 dark:hover:bg-white/30`}
+              aria-label={playerState.isPlaying ? "Pause" : "Play"}
+            >
+              {playerState.isPlaying ? (
+                <IoPauseOutline className="w-8 h-8" />
+              ) : (
+                <IoPlayOutline className="w-8 h-8" />
+              )}
+            </button>
+
+            <button
+              onClick={() => seek(10)}
+              className="p-2 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 
+                transition-all duration-200 text-gray-700 dark:text-gray-300"
+              aria-label="Forward 10 seconds"
+            >
+              <IoPlayForwardOutline className="w-6 h-6" />
+            </button>
+
+            {/* Volume Slider */}
+            <div className="relative group">
+              <div className="w-20 h-1.5 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
+                <div 
+                  className={`h-full bg-gray-800/50 dark:bg-gray-200/50 transition-all duration-150
+                    ${playerState.isPlaying ? 'opacity-100' : 'opacity-90'}`}
+                  style={{ width: `${playerState.volume * 100}%` }}
+                />
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value={playerState.volume}
+                  onChange={(e) => handleVolumeChange(Number(e.target.value))}
+                  className="absolute w-full h-full top-0 opacity-0 cursor-pointer"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const About: React.FC = () => {
   return (
@@ -150,6 +358,26 @@ const About: React.FC = () => {
                   While finding time for movies has become more challenging, I appreciate how films offer 
                   unique perspectives and storytelling that can inspire creativity in unexpected ways.
                 </p>
+              </div>
+
+              <div className="group mt-8">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                  <span className="mr-2">🤖</span>
+                  AI Exploration & Innovation
+                </h3>
+                <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-4">
+                  I&apos;m deeply fascinated by AI technology and its potential to transform our digital landscape. 
+                  I actively experiment with various AI models and tools, from language models to creative AI applications. 
+                  This AI-generated podcast about me, created using Google&apos;s Notebook LM, is just one example of my 
+                  hands-on exploration of AI capabilities. I believe staying at the forefront of AI innovation 
+                  helps me bring fresh perspectives to my development work.
+                </p>
+
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transition-all duration-300 hover:shadow-xl">
+                  <div className="flex flex-col space-y-4">
+                    <AudioPlayer />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
