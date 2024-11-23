@@ -108,9 +108,15 @@ function AudioPlayer() {
 
   return (
     <div className="relative group">
-      {/* Glass background with subtle border */}
-      <div className="relative backdrop-blur-lg bg-white/10 dark:bg-black/10 rounded-2xl p-8 
-        border border-white/20 dark:border-white/10 shadow-lg">
+      {/* Gradient background wrapper */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-secondary/30 rounded-2xl"></div>
+      
+      {/* True glassmorphism effect */}
+      <div className="relative rounded-2xl p-8 
+        bg-gradient-to-br from-white/10 to-white/5
+        backdrop-blur-md 
+        border border-white/20
+        shadow-[0_8px_32px_0_rgba(31,38,135,0.37)]">
         <audio
           ref={audioRef}
           src="/sound/podcast.wav"
@@ -119,28 +125,22 @@ function AudioPlayer() {
         />
         
         <div className="flex flex-col items-center space-y-6">
-          {/* Title and Artist */}
+          {/* Title and Artist with darker text */}
           <div className="text-center space-y-1">
-            <h4 className={`text-xl font-bold text-gray-800 dark:text-gray-100
-              ${playerState.isPlaying ? 'opacity-100' : 'opacity-90'} transition-opacity duration-500`}>
+            <h4 className="text-2xl font-bold text-gray-900 dark:text-white drop-shadow-md">
               AI-Generated Podcast
             </h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+            <p className="text-sm text-gray-800 dark:text-white/95 font-medium">
               Notebook LM
             </p>
           </div>
 
-          {/* Progress Bar */}
+          {/* Progress Bar with darker text */}
           <div className="w-full space-y-2">
-            <div className="relative w-full h-2 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden group">
+            <div className="relative w-full h-1.5 bg-black/20 rounded-full overflow-hidden 
+              backdrop-blur-sm border border-white/20">
               <div 
-                className={`absolute h-full bg-gray-800/50 dark:bg-gray-200/50 transition-all duration-150
-                  ${playerState.isPlaying ? 'opacity-100' : 'opacity-90'}`}
-                style={{ width: `${(playerState.currentTime / playerState.duration) * 100}%` }}
-              />
-              <div 
-                className={`absolute h-full w-full opacity-0 group-hover:opacity-90 bg-gray-800/30 dark:bg-gray-200/30
-                  ${playerState.isPlaying ? 'blur-sm' : 'blur-none'} transition-all duration-300`}
+                className="absolute h-full bg-gray-900/80 dark:bg-white/80 backdrop-blur-sm"
                 style={{ width: `${(playerState.currentTime / playerState.duration) * 100}%` }}
               />
               <input
@@ -158,21 +158,23 @@ function AudioPlayer() {
             </div>
             
             <div className="flex justify-between text-xs font-medium px-1">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-gray-900 dark:text-white drop-shadow-sm">
                 {formatTime(playerState.currentTime)}
               </span>
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-gray-900 dark:text-white drop-shadow-sm">
                 {formatTime(playerState.duration)}
               </span>
             </div>
           </div>
 
-          {/* Controls */}
+          {/* Controls with darker icons */}
           <div className="flex items-center justify-center space-x-8">
             <button
               onClick={toggleMute}
-              className="p-2 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 
-                transition-all duration-200 text-gray-700 dark:text-gray-300"
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 
+                backdrop-blur-sm border border-white/20 
+                transition-all duration-200 text-gray-900 dark:text-white drop-shadow-sm
+                hover:shadow-md"
               aria-label={playerState.isMuted ? "Unmute" : "Mute"}
             >
               {playerState.isMuted ? (
@@ -184,21 +186,26 @@ function AudioPlayer() {
 
             <button
               onClick={() => seek(-10)}
-              className="p-2 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 
-                transition-all duration-200 text-gray-700 dark:text-gray-300"
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 
+                backdrop-blur-sm border border-white/20 
+                transition-all duration-200 text-gray-900 dark:text-white drop-shadow-sm
+                hover:shadow-md"
               aria-label="Rewind 10 seconds"
             >
               <IoPlayBackOutline className="w-6 h-6" />
             </button>
 
-            {/* Play/Pause button */}
+            {/* Play/Pause button with darker icon */}
             <button
               onClick={togglePlayPause}
-              className={`p-4 rounded-full transition-all duration-300 transform hover:scale-105
+              className={`p-4 rounded-full 
                 ${playerState.isPlaying 
-                  ? 'bg-black/20 dark:bg-white/20 text-gray-800 dark:text-gray-100' 
-                  : 'bg-black/10 dark:bg-white/10 text-gray-700 dark:text-gray-300'
-                } hover:bg-black/30 dark:hover:bg-white/30`}
+                  ? 'bg-white/25 hover:bg-white/30' 
+                  : 'bg-white/20 hover:bg-white/25'}
+                backdrop-blur-md border border-white/30
+                shadow-lg hover:shadow-xl
+                transition-all duration-300 transform hover:scale-105
+                text-gray-900 dark:text-white drop-shadow-md`}
               aria-label={playerState.isPlaying ? "Pause" : "Play"}
             >
               {playerState.isPlaying ? (
@@ -210,19 +217,21 @@ function AudioPlayer() {
 
             <button
               onClick={() => seek(10)}
-              className="p-2 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 
-                transition-all duration-200 text-gray-700 dark:text-gray-300"
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 
+                backdrop-blur-sm border border-white/20 
+                transition-all duration-200 text-gray-900 dark:text-white drop-shadow-sm
+                hover:shadow-md"
               aria-label="Forward 10 seconds"
             >
               <IoPlayForwardOutline className="w-6 h-6" />
             </button>
 
-            {/* Volume Slider */}
+            {/* Volume Slider with darker indicator */}
             <div className="relative group">
-              <div className="w-20 h-1.5 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
+              <div className="w-20 h-1.5 bg-black/20 rounded-full overflow-hidden 
+                backdrop-blur-sm border border-white/20">
                 <div 
-                  className={`h-full bg-gray-800/50 dark:bg-gray-200/50 transition-all duration-150
-                    ${playerState.isPlaying ? 'opacity-100' : 'opacity-90'}`}
+                  className="h-full bg-gray-900/80 dark:bg-white/80"
                   style={{ width: `${playerState.volume * 100}%` }}
                 />
                 <input
