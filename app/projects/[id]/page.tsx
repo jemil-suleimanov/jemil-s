@@ -117,7 +117,7 @@ const ProjectPage: React.FC = () => {
             Back to Projects
           </Link>
           <a 
-            href="https://github.com/jemil-c-137/git-diff-ai"
+            href="https://github.com/jemil-suleimanov/git-diff-ai"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-700 
