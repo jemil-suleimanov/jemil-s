@@ -1,6 +1,6 @@
 "use client";
 
-import { BaseSidebar } from '@/app/shared/components/layout/BaseSidebar';
+import { BaseSidebar } from '@/src/shared/components/layout/BaseSidebar';
 import React from 'react';
 import { FaFolder, FaSearch, FaCog, FaRobot } from 'react-icons/fa';
 

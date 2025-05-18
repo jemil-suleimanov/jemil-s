@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Me from '@/public/images/me.webp';
-import { useAppSelector, useAppDispatch } from './lib/hooks';
-import { setTheme } from '@/app/lib/slices/theme.slice';
-import { themes } from '@/app/lib/slices/theme.slice';
+import { useAppSelector, useAppDispatch } from '../src/lib/hooks';
+import { setTheme } from '@/src/lib/slices/theme.slice';
+import { themes } from '@/src/lib/slices/theme.slice';
 
 
 const Home: React.FC = () => {
@@ -14,7 +14,7 @@ const Home: React.FC = () => {
   const theme = useAppSelector((state) => state.theme.value);
   const dispatch = useAppDispatch();
 
-  const linkedinLink = "https://www.linkedin.com/in/jemil-suleimanov-559852116/";
+  const linkedinLink = "https://www.linkedin.com/in/dzhemil-suleimanov-559852116/";
 
   const contactMe = () => {
     setIsContactClicked(true);

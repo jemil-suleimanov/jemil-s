@@ -1,15 +1,15 @@
 'use client'
 
 import React, { useState } from 'react';
-import { ThemeSwitcher } from '@/app/features';
-import { ThemeHandler } from '@/app/features';
-import { FileExplorer } from '@/app/features';
-import { Tabs } from '@/app/features';
-import { IconSidebar } from '@/app/features';
-import { SettingsSidebar } from '@/app/features';
-import { AIChatSidebar } from '@/app/features';
-import StoreProvider from '@/app/lib/providers/StoreProvider';
-import { FontFamilyHandler, FontSizeHandler, RouteHandler } from '@/app/features';
+import { ThemeSwitcher } from '@/src/features';
+import { ThemeHandler } from '@/src/features';
+import { FileExplorer } from '@/src/features';
+import { Tabs } from '@/src/features';
+import { IconSidebar } from '@/src/features';
+import { SettingsSidebar } from '@/src/features';
+import { AIChatSidebar } from '@/src/features';
+import StoreProvider from '@/src/lib/providers/StoreProvider';
+import { FontFamilyHandler, FontSizeHandler, RouteHandler } from '@/src/features';
 import "./globals.css";
 
 const RootLayoutContent = React.memo(({ children }: { children: React.ReactNode }) => {

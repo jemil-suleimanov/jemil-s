@@ -1,4 +1,4 @@
-import { Tab } from '@/app/features';
+import { Tab } from '@/src/features';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 

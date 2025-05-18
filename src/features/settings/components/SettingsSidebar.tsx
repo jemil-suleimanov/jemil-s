@@ -4,8 +4,8 @@ import React from 'react';
 import { useAppSelector, useAppDispatch } from '../../../lib/hooks';
 import { setFontFamily, FontFamily, fontFamilies, setFontSize } from '../../../lib/store';
 import { Theme } from '../../theme';
-import { setTheme, themes } from '@/app/lib/slices/theme.slice';
-import { BaseSidebar } from '@/app/shared/components/layout/BaseSidebar';
+import { setTheme, themes } from '@/src/lib/slices/theme.slice';
+import { BaseSidebar } from '@/src/shared/components/layout/BaseSidebar';
 
 const SettingsSidebar: React.FC = () => {
   const dispatch = useAppDispatch();

@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { FaSun, FaMoon, FaRocket } from 'react-icons/fa';
-import { useAppSelector, useAppDispatch } from '@/app/lib/hooks';
+import { useAppSelector, useAppDispatch } from '@/src/lib/hooks';
 import { Theme, themes } from '../types';
-import { setTheme } from '@/app/lib/slices/theme.slice';
+import { setTheme } from '@/src/lib/slices/theme.slice';
 
 export default function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);

@@ -7,8 +7,8 @@ import { IoClose } from 'react-icons/io5';
 import { DiReact } from 'react-icons/di';
 import { SiVuedotjs, SiJson } from 'react-icons/si';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/app/lib/store';
-import { removeTab } from '@/app/lib/slices/tabs.slice';
+import { RootState } from '@/src/lib/store';
+import { removeTab } from '@/src/lib/slices/tabs.slice';
 
 const Tabs: React.FC = () => {
   const tabs = useSelector((state: RootState) => state.tabs.tabs);

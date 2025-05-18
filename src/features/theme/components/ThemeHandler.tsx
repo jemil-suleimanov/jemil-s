@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useAppSelector } from '@/app/lib/hooks';
+import { useAppSelector } from '@/src/lib/hooks';
 
 export default function ThemeHandler() {
   const theme = useAppSelector((state) => state.theme.value);

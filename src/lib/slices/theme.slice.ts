@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Theme, ThemeState } from '@/app/features';
+import { Theme, ThemeState } from '@/src/features';
 
 const initialState: ThemeState = {
   value: 'light'

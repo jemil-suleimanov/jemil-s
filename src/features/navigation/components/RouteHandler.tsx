@@ -3,7 +3,7 @@
 import { Suspense } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { addTab } from '@/app/lib/slices/tabs.slice';
+import { addTab } from '@/src/lib/slices/tabs.slice';
 
 function RouteHandlerContent() {
   const pathname = usePathname();
