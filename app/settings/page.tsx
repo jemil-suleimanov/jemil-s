@@ -1,8 +1,11 @@
 "use client";
 
 import React from 'react';
-import { useAppSelector, useAppDispatch } from '../lib/hooks';
-import { setTheme, setFontFamily, setFontSize, Theme, FontFamily, FontSize, themes, fontFamilies, fontSizes } from '../lib/store';
+import { useAppSelector, useAppDispatch } from '@/src/lib/hooks';
+import { setFontFamily, setFontSize, FontFamily, FontSize, fontFamilies, fontSizes } from '@/src/lib/store';
+import { Theme } from '@/src/features';
+import { setTheme } from '@/src/lib/slices/theme.slice';
+import { themes } from '@/src/lib/constants';
 
 const Settings: React.FC = () => {
   const dispatch = useAppDispatch();

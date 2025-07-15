@@ -1,11 +1,8 @@
-"use client";
-
 import React from 'react';
 import Link from 'next/link';
 
 const projects = [
-  { id: 1, name: 'Project 1', description: 'A cool project using React and Node.js' },
-  { id: 2, name: 'Project 2', description: 'An awesome app built with Python and Django' },
+  { id: 1, name: 'git-diff-ai', description: 'AI Powered git commit messages generating tool' },
 ];
 
 const Projects: React.FC = () => {
